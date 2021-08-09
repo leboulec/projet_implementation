@@ -1,1 +1,0 @@
-../common/post-image.sh
