@@ -1,0 +1,2 @@
+#source "$BR2_EXTERNAL_IMPL_PATH/package/axi4-dma-driver/Config.in"
+#source "$BR2_EXTERNAL_IMPL_PATH/package/axi-dma-test/Config.in"

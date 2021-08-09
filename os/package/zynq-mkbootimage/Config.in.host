@@ -1,0 +1,4 @@
+config BR2_PACKAGE_HOST_ZYNQ_MKBOOTIMAGE
+  bool "host zynq-mkbootimage"
+  help
+    Boot image generation tool for Zynq-7000 and ZynqMP-Soc
