@@ -1,6 +1,6 @@
 # Buildroot framework for Zynq-7000
 
-User files organisations
+User files
 ----
 - `rtl` contains all user rtl files and constraints
   - `constr` folder contains user contraints
@@ -18,7 +18,7 @@ User files organisations
   - `xsim.mk` contains all targets for behavioral simulation
   - `buildroot.mk` contains all targets to build buildroot distribution
 
-Output files organisation
+Output files
 ----
 All output files are copied to the build directory (except some garbage from xsim in project root):
 - `build/vivado` contains all vivado generated files especially bitstream and hardware definition file (.hdf)
