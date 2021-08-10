@@ -153,6 +153,7 @@ Sending commands to buildroot
   make buildroot-cmd CMD=<your command>
 ```
 Send command to buildroot build system. CMD argument is mandatory.
+
 Exemple: Open menuconfig of buildroot
 ```bash
   make buildroot-cmd CMD="menuconfig"
