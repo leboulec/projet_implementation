@@ -43,12 +43,6 @@ If gmake is not present in /bin, you can create a symbolic link yourself:
   sudo ln -s /bin/make /bin/gmake
 ```
 
-Installing buildroot dependancies (Debian based distributions only)
-----
-```bash
-  sudo apt install which sed make build-essential gcc g++ bash patch gzip bzip2 perl tar cpio unzip rsync file bc wget python ncurses-base ncurses-bin libncurses5-dev bazaar cvs git mercurial scp subversion
-```
-
 Before initial manipulation:
 ----
 ```bash
