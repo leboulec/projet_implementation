@@ -113,14 +113,8 @@ ${XSCT_WS}/${XSCT_BSP_NAME}/system.mss: ${XSCT_FOLDER}/gen_bsp.tcl
 	@xsct ${XSCT_FOLDER}/gen_bsp.tcl
 	@echo "### INFO: BSP project ${XSCT_BSP_NAME} successfully generated"
 
-xsct-gen-hw-project: ${XSCT_WS}/${XSCT_HW_NAME}/system.hdf
-
-xsct-gen-bsp-project: ${XSCT_WS}/${XSCT_BSP_NAME}/system.mss
-
-xsct-make-workspace: xsct-gen-hw-project xsct-gen-bsp-project
-
 xsct-clean-workspace:
-	@rm -rf ${XSCT_WS} ${XSCT_FOLDER}/gen_hwproj.tcl ${XSCT_FOLDER}/gen_bsp.tcl ${XSCT_FOLDER}/build-bm-* ${XSCT_FOLDER}/run-bm-*  ${XSCT_FOLDER}/debug-bm-* ${XSCT_FOLDER}/*.done
+	@rm -rf ${XSCT_WS} ${XSCT_FOLDER}/gen_hwproj.tcl ${XSCT_FOLDER}/gen_bsp.tcl ${XSCT_FOLDER}/build-bm-* ${XSCT_FOLDER}/run-bm-*  ${XSCT_FOLDER}/debug-bm-* ${XSCT_FOLDER}/*.done os/board/zynq_zedboard/dts os/board/zynq_zedboard/fpga.bit
 
 ${XSCT_FOLDER}/bm-verify-${BM_PROJECT}.done: | ${XSCT_WS}
 	@if [[ "${BM_PROJECT}" == *[!\ ]* ]]; then \
@@ -141,8 +135,6 @@ ${XSCT_FOLDER}/bm-verify-${BM_PROJECT}.done: | ${XSCT_WS}
 		exit -1; \
 	fi
 
-xsct-baremetal-verify: ${XSCT_FOLDER}/bm-verify-${BM_PROJECT}.done
-
 ${XSCT_WS}/${BM_PROJECT}/Debug/${BM_PROJECT}.elf: ${XSCT_WS}/${XSCT_HW_NAME}/system.hdf ${XSCT_WS}/${XSCT_BSP_NAME}/system.mss ${XSCT_FOLDER}/bm-verify-${BM_PROJECT}.done build/xsct/build-bm-${BM_PROJECT}.tcl ${BARE_METAL_C} ${BARE_METAL_H}
 	@echo "### INFO: Generating application project ${BM_PROJECT}"
 	@xsct ${XSCT_FOLDER}/build-bm-${BM_PROJECT}.tcl
@@ -160,7 +152,7 @@ xsct-baremetal-debug: xsct-baremetal-build ${XSCT_FOLDER}/debug-bm-${BM_PROJECT}
 	@xsdb -interactive build/xsct/debug-bm-${BM_PROJECT}.tcl
 	@echo "### INFO: baremetal project ${BM_PROJECT} debug session successfully finished"
 
-xsct-clean:
+xsct-clean: xsct-clean-workspace
 	@rm -rf build/xsct
 
 xsct-xsdk: ${XSCT_WS}/${XSCT_HW_NAME}/system.hdf
@@ -186,9 +178,8 @@ ${XSCT_FOLDER}/boot-jtag-buildroot.tcl: | ${XSCT_FOLDER}
 	@echo "dow -data build/buildroot-output/images/boot/uramdisk.image.gz 0x4000000" >> $@
 
 
-xsct-boot-jtag-buildroot: buildroot-update ${XSCT_FOLDER}/boot-jtag-buildroot.tcl
+xsct-boot-jtag-buildroot: buildroot-update ${XSCT_WS}/${XSCT_HW_NAME}/system.hdf ${XSCT_FOLDER}/boot-jtag-buildroot.tcl
 	@echo "### INFO: Booting Buildroot GNU/Linux distribution"
 	@xsct ${XSCT_FOLDER}/boot-jtag-buildroot.tcl
 	@echo "### INFO: Linux boot successfully done"
 
-xsct-clean-bm-project:
