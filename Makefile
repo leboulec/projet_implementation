@@ -8,7 +8,7 @@ SIM_TOP    ?= tb_top
 all: buildroot-update
 
 clean: vivado-clean xsct-clean buildroot-clean sim-clean
-	@rm -rf *.html *.xml build/
+	@rm -rf *.html *.xml *.zip build/
 
 include mk/find-files.mk
 include mk/vivado.mk

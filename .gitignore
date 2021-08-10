@@ -1,0 +1,10 @@
+build/*
+os/board/zynq-zedboard/dts/*
+os/board/zynq-zedboard/fpga.bit
+.Xil/
+xsim.dir/
+*.jou
+*.log
+*.html
+*.pb
+*.zip
