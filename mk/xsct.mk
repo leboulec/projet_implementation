@@ -43,6 +43,7 @@ os/board/zynq-zedboard/dts/system-top.dts: ${XSCT_FOLDER}/dts/system-top.dts
 	@find ${XSCT_FOLDER}/dts/ -name "*.dtsi" -exec cp {} os/board/zynq-zedboard/dts \;
 	@find ${XSCT_FOLDER}/dts/ -name "*.h"    -exec cp {} os/board/zynq-zedboard/dts \;
 	@find ${XSCT_FOLDER}/dts/ -name "*.dts"  -exec cp {} os/board/zynq-zedboard/dts \;
+	@find ${XSCT_FOLDER}/dts/ -name "*.bit"  -exec cp {} os/board/zynq-zedboard/dts \;
 
 os/board/zynq-zedboard/fsbl.elf: ${XSCT_FOLDER}/fsbl/executable.elf
 	@cp $< $@
@@ -102,7 +103,7 @@ ${XSCT_FOLDER}/clean-bm-project.tcl: | ${XSCT_WS}
 	@echo "setws ${XSCT_WS}"                   > $@
 	@echo "deleteprojets -name ${BM_PROJECT}" >> $@
 
-${XSCT_WS}/${XSCT_HW_NAME}/system.hdf: ${XSCT_FOLDER}/gen_hwproj.tcl
+${XSCT_WS}/${XSCT_HW_NAME}/system.hdf: build/vivado/system.hdf ${XSCT_FOLDER}/gen_hwproj.tcl
 	@echo "### INFO: Generating hardware project ${XSCT_HW_NAME}"
 	@xsct ${XSCT_FOLDER}/gen_hwproj.tcl
 	@echo "### INFO: hardware project ${XSCT_HW_NAME} successfully generated"
@@ -124,7 +125,7 @@ xsct-clean-workspace:
 ${XSCT_FOLDER}/bm-verify-${BM_PROJECT}.done: | ${XSCT_WS}
 	@if [[ "${BM_PROJECT}" == *[!\ ]* ]]; then \
 		if [[ "$(shell find baremetal/ -name ${BM_PROJECT})" == *[!\ ]* ]]; then \
-			touch $@ \
+			echo "done" > ${XSCT_FOLDER}/bm-verify-${BM_PROJECT}.done \
 			echo "### INFO: Found baremetal project: baremetal/${BM_PROJECT}"; \
 		else \
 			echo "### ERROR: Project ${BM_PROJECT} not found in \"baremetal/\" directory"; \
