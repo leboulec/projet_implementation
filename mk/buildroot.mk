@@ -9,10 +9,11 @@ buildroot-clean:
 	@rm -rf build/buildroot build/buildroot-output
 
 # update buildroot
-buildroot-update: sys-update | build/buildroot
+build/buildroot-output/images/boot/BOOT.BIN: os/board/zynq-zedboard/dts/system-top.dts os/board/zynq-zedboard/fsbl.elf | build/buildroot
 	@make O=${PWD}/build/buildroot-output BR2_EXTERNAL=${PWD}/os -C build/buildroot
 
-# send command to buildroot makefile system
+
+buildroot-update: build/buildroot-output/images/boot/BOOT.BIN
 buildroot-cmd:
 	@if [[ "${CMD}" == *[!\ ]* ]]; then \
 		make O=${PWD}/build/buildroot-output BR2_EXTERNAL=${PWD}/os ${CMD} -C build/buildroot; \
