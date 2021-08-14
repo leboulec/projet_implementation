@@ -64,13 +64,22 @@ ${XSCT_FOLDER}/gen_bsp.tcl: | ${XSCT_WS}
 	@echo "createbsp -name ${XSCT_BSP_NAME} -hwproject ${XSCT_HW_NAME} -os standalone -proc ps7_cortexa9_0" >> $@
 	@echo "project -build -name ${XSCT_BSP_NAME} -type bsp"                                                 >> $@
 
-${XSCT_FOLDER}/build-bm-${BM_PROJECT}.tcl: | ${XSCT_WS}
+${XSCT_FOLDER}/create-bm-${BM_PROJECT}.tcl: | ${XSCT_WS}
 	@if [[ "`find baremetal/${BM_PROJECT} -name *.c`" == *[!\ ]* ]]; then \
 		echo "setws ${XSCT_WS}" > $@; \
 		echo "createapp -name ${BM_PROJECT} -app {Empty Application} -hwproject ${XSCT_HW_NAME} -bsp ${XSCT_BSP_NAME} -proc ps7_cortexa9_0" >> $@; \
 		echo "importsources -name ${BM_PROJECT} -path baremetal/${BM_PROJECT}" >> $@; \
 		echo "project -build -name ${BM_PROJECT} -type app" >> $@; \
-		echo "exit" >> $@; \
+	else \
+		echo "Error: Project ${BM_PROJECT} has no C sources"; \
+		exit 1; \
+	fi
+
+${XSCT_FOLDER}/build-bm-${BM_PROJECT}.tcl: ${XSCT_FOLDER}/create-bm-${BM_PROJECT}.tcl | ${XSCT_WS}
+	@if [[ "`find baremetal/${BM_PROJECT} -name *.c`" == *[!\ ]* ]]; then \
+		echo "setws ${XSCT_WS}" > $@; \
+		echo "importsources -name ${BM_PROJECT} -path baremetal/${BM_PROJECT}" >> $@; \
+		echo "project -build -name ${BM_PROJECT} -type app" >> $@; \
 	else \
 		echo "Error: Project ${BM_PROJECT} has no C sources"; \
 		exit 1; \
@@ -136,8 +145,13 @@ ${XSCT_FOLDER}/bm-verify-${BM_PROJECT}.done: | ${XSCT_WS}
 	fi
 
 ${XSCT_WS}/${BM_PROJECT}/Debug/${BM_PROJECT}.elf: ${XSCT_WS}/${XSCT_HW_NAME}/system.hdf ${XSCT_WS}/${XSCT_BSP_NAME}/system.mss ${XSCT_FOLDER}/bm-verify-${BM_PROJECT}.done build/xsct/build-bm-${BM_PROJECT}.tcl ${BARE_METAL_C} ${BARE_METAL_H}
-	@echo "### INFO: Generating application project ${BM_PROJECT}"
-	@xsct ${XSCT_FOLDER}/build-bm-${BM_PROJECT}.tcl
+	@if [ ! -d ${XSCT_WS}/${BM_PROJECT} ]; then \
+		echo "### INFO: Generating application project ${BM_PROJECT}"; \
+		xsct ${XSCT_FOLDER}/create-bm-${BM_PROJECT}.tcl; \
+	else \
+		echo "### INFO: Updating application project ${BM_PROJECT}"; \
+		xsct ${XSCT_FOLDER}/build-bm-${BM_PROJECT}.tcl; \
+	fi
 	@echo "### INFO: Built executable: ${XSCT_WS}/${BM_PROJECT}/Debug/${BM_PROJECT}.elf"
 
 xsct-baremetal-build: ${XSCT_WS}/${BM_PROJECT}/Debug/${BM_PROJECT}.elf

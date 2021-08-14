@@ -34,6 +34,28 @@ Requirements
 - [Buildroot requirements](https://buildroot.org/downloads/manual/manual.html#requirement)
 - Enough space on disk to store the output products (required:15GB, recommended:40GB)
 
+Minicom configuration
+----
+To control the terminal of buildroot from Minicom, we need to disable the hardware flow control.
+This can be done in Minicom by using CTRL+o to open the configuration menu then select "serial port configuration" then disable "Hardware flow control" option.
+Then select "Save config to dfl" to save configuration for future use.
+
+Allowing current user in host machine to access to serial ports without sudo
+----
+First add current user to dialout and tty:
+```shell
+  sudo usermod -a -G tty ${USER}
+  sudo usermod -a -G dialout ${USER}
+```
+Then you have to reboot
+
+Xilinx JTAG drivers install
+----
+If your board isn't detected, it can be because the required driver is not installed. You can install it as following:
+```bash
+  sudo bash <xilinx_install>/Vivado/<version>/data/xicom/cable_drivers/install_drivers
+```
+
 gmake vs make
 ----
 GNU Make is not the only one make executable. To handle this problem, some  rename the make executable to gmake.
@@ -94,7 +116,6 @@ First, create project with Xilinx SDK then copy sources to baremetal directory:
 ```
 Then build a project:
 ```bash
-  make xsct-clean-workspace # clean workspace before (this is not mandatory but cleaner if you change c files)
   make xsct-baremetal-build BM_PROJECT=<name of your project> # build elf
 ```
 Then connect JTAG (mini usb port "PROG") to program FPGA and boot the board and UART (mini usb port "UART") to receive the outputs of the printfs in Minicom.
@@ -233,19 +254,6 @@ Two partitions are required:
 ```
   Then run Minicom and insert SDCARD.
 
-Minicom configuration
-----
-To control the terminal of buildroot from Minicom, we need to disable the hardware flow control.
-This can be done in Minicom by using CTRL+o to open the configuration menu then select "serial port configuration" then disable "Hardware flow control" option.
-Then select "Save config to dfl" to save configuration for future use.
-
-Xilinx JTAG drivers install
-----
-If your board isn't detected, it can be because the required driver is not installed. You can install it as following:
-```bash
-  sudo bash <xilinx_install>/Vivado/<version>/data/xicom/cable_drivers/install_drivers
-```
-
 Usefull documentation links
 ----
 - [Xilinx Vivado design flows overview](https://www.xilinx.com/support/documentation/sw_manuals/xilinx2020_2/ug892-vivado-design-flows-overview.pdf) (for information, this framework implement a non-project flow)
@@ -258,7 +266,7 @@ Usefull documentation links
 
 TODO list
 ----
-- Add support of cosimulation by replacing automatically in flow the Zynq VIP instance by a systemC model and connect that to (built by flow) [xilinx qemu](https://github.com/Xilinx/qemu.git). An available tutorial for petalinux can be found [here](https://blog.reds.ch/?p=1180). The tutorial not match our requirements.
+- Add support of cosimulation by replacing automatically in flow the Zynq VIP instance by a systemC model and connect that to (built by flow) [xilinx qemu](https://github.com/Xilinx/qemu.git). An available tutorial for petalinux can be found [here](https://blog.reds.ch/?p=1180). This tutorial doesn't meet our requirements (it use the pretty expensive Mentor QuestaSim when we want to use only free Xilinx tools for now).
 
 LICENSE
 ----
