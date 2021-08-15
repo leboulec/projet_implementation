@@ -63,10 +63,6 @@
 `define DMA_S2MM_TAILDESC_MSB 8'h34
 
 `define ZYNQ_INSTANCE tb_top.bd_wrapper.design_1_i.processing_system7_0.inst
-`define FCLK0_TL 10
-//`define FCLK1_TL 20
-//`define FCLK3_TL 10
-//`define FCLK4_TL 10
 `define NUM_FCLK 1
 
 `uselib lib=unisims_ver
