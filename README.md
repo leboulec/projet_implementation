@@ -186,7 +186,7 @@ Exemple: Open menuconfig of buildroot
 Reconfiguring buildroot (if file `os/configs/zynq_zedboard_defconfig` is modified)
 ----
 ```bash
-  make buildroot-force-defconfig CMD="linux-menuconfig"
+  make buildroot-force-defconfig
 ```
 
 Cleaning Buildroot output products
