@@ -9,7 +9,6 @@ User files
 - `os` folder contains buildroot packages and configs used
   - `configs` contains defconfigs for supported boards (here only zynq-zedboard is supported)
   - `board` contains scripts for post build or pre build
-    - `common` contains files shared by all platform supported (initially only zynq-zedboard is supported)
     - `<board name>` contains files specific to board supported (initially there is only zynq-zedboard)
   - `package` contains all buildroot packages
 - `mk` folder contains all mandatory makefiles for this project:
