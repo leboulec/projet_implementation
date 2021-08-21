@@ -1,6 +1,7 @@
 build/*
 os/board/zynq-zedboard/dts/*
 os/board/zynq-zedboard/fpga.bit
+os/board/zynq-zedboard/fsbl.elf
 .Xil/
 xsim.dir/
 *.jou

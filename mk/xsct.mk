@@ -44,6 +44,7 @@ os/board/zynq-zedboard/dts/system-top.dts: ${XSCT_FOLDER}/dts/system-top.dts
 	@find ${XSCT_FOLDER}/dts/ -name "*.h"    -exec cp {} os/board/zynq-zedboard/dts \;
 	@find ${XSCT_FOLDER}/dts/ -name "*.dts"  -exec cp {} os/board/zynq-zedboard/dts \;
 	@find ${XSCT_FOLDER}/dts/ -name "*.bit"  -exec cp {} os/board/zynq-zedboard/dts \;
+	@sed -i '/\/ {/i #include "system-user.dtsi"' os/board/zynq-zedboard/dts/system-top.dts
 
 os/board/zynq-zedboard/fsbl.elf: ${XSCT_FOLDER}/fsbl/executable.elf
 	@cp $< $@

@@ -17,6 +17,7 @@ User files
   - `xsct.mk` contains all targets to handle device-tree and fsbl baremetal build
   - `xsim.mk` contains all targets for behavioral simulation
   - `buildroot.mk` contains all targets to build buildroot distribution
+- `baremetal` contains all baremetal projects
 
 Output files
 ----
@@ -161,6 +162,10 @@ Update buildroot:
   make buildroot-update
 ```
 This will (re)generate buildroot outputs
+You can force this update with the following target:
+```bash
+  make buildroot-force-update
+```
 
 Sending commands to buildroot
 ----
@@ -176,6 +181,12 @@ Exemple: Open menuconfig of buildroot
   Exemple: Open menuconfig of the Linux Kernel
 ```bash
   make buildroot-cmd CMD="linux-menuconfig"
+```
+
+Reconfiguring buildroot (if file `os/configs/zynq_zedboard_defconfig` is modified)
+----
+```bash
+  make buildroot-force-defconfig CMD="linux-menuconfig"
 ```
 
 Cleaning Buildroot output products
