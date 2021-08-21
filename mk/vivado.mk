@@ -69,15 +69,16 @@ build/vivado/script/import_ips.tcl: ${SYNTH_XCI_FILES} | build/vivado/script
 build/vivado/script/import_bds.tcl: ${SYNTH_BD_FILES} | build/vivado/script
 	@rm -f $@
 	@touch $@
-	@for f in `find rtl/synth -name *.bd`; do                                                   \
-		cp $${f} build/vivado/build;                                                              \
-		echo "read_bd build/vivado/build/`basename $${f}`"                                 >> $@; \
-		echo "set_property part ${PART} [current_project]"                                 >> $@; \
-		echo "set_property board_part ${BOARD} [current_project]"                          >> $@; \
-		echo "set_property target_language VHDL [current_project]"                         >> $@; \
-		echo "generate_target all [get_files build/vivado/build/`basename $${f}`] -force"  >> $@; \
-		echo "make_wrapper -files [get_files build/vivado/`basename $${f}`] -top"          >> $@; \
-		echo "read_vhdl build/vivado/build/hdl/$$(basename $${f%.*})_wrapper.vhd"          >> $@; \
+	@for f in `find rtl/synth -name *.bd`; do                                                      \
+		cp $${f} build/vivado/build;                                                                 \
+		echo "read_bd build/vivado/build/`basename $${f}`"                                 >> $@;    \
+		echo "set_property part ${PART} [current_project]"                                 >> $@;    \
+		echo "set_property board_part ${BOARD} [current_project]"                          >> $@;    \
+		echo "set_property target_language VHDL [current_project]"                         >> $@;    \
+		echo "generate_target all [get_files build/vivado/build/`basename $${f}`] -force"  >> $@;    \
+		echo "export_bd_synth -force [get_files build/vivado/build/`basename $${f}`] -force"  >> $@; \
+		echo "make_wrapper -files [get_files build/vivado/build/`basename $${f}`] -top"    >> $@;    \
+		echo "read_vhdl build/vivado/build/hdl/$$(basename $${f%.*})_wrapper.vhd"          >> $@;    \
 	done
 
 # generate synthetisable files importer script
@@ -127,7 +128,7 @@ build/vivado/import-synth.done: build/vivado/script/import_synth.tcl
 
 vivado-all: build/vivado/system.hdf
 
-vivado-gui: build/vivado/import_synth.tcl
+vivado-gui: build/vivado/script/import_synth.tcl
 	@vivado -nojournal -nolog -source $<
 
 vivado-clean:
