@@ -62,7 +62,7 @@
 `define DMA_S2MM_TAILDESC     8'h30
 `define DMA_S2MM_TAILDESC_MSB 8'h34
 
-`define ZYNQ_INSTANCE tb_top.bd_wrapper.design_1_i.processing_system7_0.inst
+`define ZYNQ_INSTANCE tb_top.bd_wrapper.processing_system7_0.inst
 `define NUM_FCLK 1
 
 `uselib lib=unisims_ver
@@ -90,7 +90,7 @@ module tb_top;
 //  logic                       m_tlast_vga ;
 //  logic                       m_tready_vga;
 
-  design_1_wrapper bd_wrapper(
+  design_1 bd_wrapper(
     .DDR_addr()
   , .DDR_ba()
   , .DDR_cas_n()
