@@ -4,9 +4,6 @@ XSCT_WS      = ${XSCT_FOLDER}/workspace
 XSCT_HW_NAME = hw1
 XSCT_BSP_NAME = bsp1
 
-buildroot-requirements: os/board/zynq_zedboard/dts/system-top.dts os/board/zynq_zedboard/fsbl.elf
-baremetal-requirements: build/xsct/fsbl/executable.elf
-
 ${XSCT_FOLDER}:
 	@mkdir -p $@
 
@@ -29,7 +26,7 @@ ${XSCT_FOLDER}/gen_dts.tcl: | ${XSCT_FOLDER}
 	@echo "open_hw_design build/vivado/system.hdf"                                     > $@
 	@echo "set_repo_path ${XSCT_FOLDER}/device-tree-xlnx"                             >> $@
 	@echo "create_sw_design device-tree-sources -proc ps7_cortexa9_0 -os device_tree" >> $@
-	@echo "set_property CONFIG.periph_type_overrides \"{BOARD zedboard}\" [get_os]"   >> $@
+	@echo "set_property CONFIG.periph_type_overrides \"{BOARD ${XSCT_BOARD}}\" [get_os]"   >> $@
 	@echo "generate_bsp -dir ${XSCT_FOLDER}/dts"                                      >> $@
 	@echo "exit"                                                                      >> $@
 
@@ -41,22 +38,22 @@ ${XSCT_FOLDER}/dts/system-top.dts: build/vivado/system.hdf ${XSCT_FOLDER}/gen_dt
 	@echo "### INFO: Generating device-tree files in ${PWD}/${XSCT_FOLDER}/dts/"
 	@hsi -source ${XSCT_FOLDER}/gen_dts.tcl -nolog -nojournal
 
-os/board/zynq-zedboard/dts/system-top.dts: ${XSCT_FOLDER}/dts/system-top.dts
-	@echo "### INFO: Copying and patching generated device-tree files from ${PWD}/${XSCT_FOLDER}/dts/ to ${PWD}/os/board/zynq-zedboard/dts/"
-	@mkdir -p os/board/zynq-zedboard/dts
+os/board/${BR2_BOARD}/dts/system-top.dts: ${XSCT_FOLDER}/dts/system-top.dts
+	@echo "### INFO: Copying and patching generated device-tree files from ${PWD}/${XSCT_FOLDER}/dts/ to ${PWD}/os/board/${BR2_BOARD}/dts/"
+	@mkdir -p os/board/${BR2_BOARD}/dts
 	@cp $< $@
-	@touch os/board/zynq-zedboard/dts/pl.dtsi
-	@find ${XSCT_FOLDER}/dts/ -name "*.dtsi" -exec cp {} os/board/zynq-zedboard/dts \;
-	@find ${XSCT_FOLDER}/dts/ -name "*.h"    -exec cp {} os/board/zynq-zedboard/dts \;
-	@find ${XSCT_FOLDER}/dts/ -name "*.dts"  -exec cp {} os/board/zynq-zedboard/dts \;
-	@find ${XSCT_FOLDER}/dts/ -name "*.bit"  -exec cp {} os/board/zynq-zedboard/dts \;
-	@sed -i '/\/ {/i #include "system-user.dtsi"' os/board/zynq-zedboard/dts/system-top.dts
+	@touch os/board/${BR2_BOARD}/dts/pl.dtsi
+	@find ${XSCT_FOLDER}/dts/ -name "*.dtsi" -exec cp {} os/board/${BR2_BOARD}/dts \;
+	@find ${XSCT_FOLDER}/dts/ -name "*.h"    -exec cp {} os/board/${BR2_BOARD}/dts \;
+	@find ${XSCT_FOLDER}/dts/ -name "*.dts"  -exec cp {} os/board/${BR2_BOARD}/dts \;
+	@find ${XSCT_FOLDER}/dts/ -name "*.bit"  -exec cp {} os/board/${BR2_BOARD}/dts \;
+	@sed -i '/\/ {/i #include "system-user.dtsi"' os/board/${BR2_BOARD}/dts/system-top.dts
 
-os/board/zynq-zedboard/fsbl.elf: ${XSCT_FOLDER}/fsbl/executable.elf
+os/board/${BR2_BOARD}/fsbl.elf: ${XSCT_FOLDER}/fsbl/executable.elf
 	@echo "### INFO: Copying fsbl executable from ${PWD}/$< to ${PWD}/$@"
 	@cp $< $@
 
-sys-update: os/board/zynq-zedboard/fsbl.elf os/board/zynq-zedboard/dts/system-top.dts
+sys-update: os/board/${BR2_BOARD}/fsbl.elf os/board/${BR2_BOARD}/dts/system-top.dts
 
 ### ------------------------------------------------------------------------------------------
 
@@ -139,7 +136,7 @@ ${XSCT_WS}/${XSCT_BSP_NAME}/system.mss: ${XSCT_FOLDER}/gen_bsp.tcl
 
 xsct-clean-workspace:
 	@echo "### INFO: Cleaning baremetal workspace"
-	@rm -rf ${XSCT_WS} ${XSCT_FOLDER}/gen_hwproj.tcl ${XSCT_FOLDER}/gen_bsp.tcl ${XSCT_FOLDER}/build-bm-* ${XSCT_FOLDER}/run-bm-*  ${XSCT_FOLDER}/debug-bm-* ${XSCT_FOLDER}/*.done os/board/zynq_zedboard/dts os/board/zynq_zedboard/fpga.bit
+	@rm -rf ${XSCT_WS} ${XSCT_FOLDER}/gen_hwproj.tcl ${XSCT_FOLDER}/gen_bsp.tcl ${XSCT_FOLDER}/build-bm-* ${XSCT_FOLDER}/run-bm-*  ${XSCT_FOLDER}/debug-bm-* ${XSCT_FOLDER}/*.done os/board/${BR2_BOARD}/dts os/board/${BR2_BOARD}/fpga.bit
 
 ${XSCT_FOLDER}/bm-verify-${BM_PROJECT}.done: | ${XSCT_WS}
 	@if [[ "${BM_PROJECT}" == *[!\ ]* ]]; then \
@@ -191,7 +188,7 @@ xsct-xsdk: ${XSCT_WS}/${XSCT_HW_NAME}/system.hdf
 	@echo "Would you like to save the modified files? [y, N]"
 	@read rc; \
 	if [[ "$${rc}" == @(y|Y) ]]; then \
-		echo "### INFO: Copying source files from ${PWD}/${XSCT_WS}/ to ${PWD}/rtl/synth"; \
+		echo "### INFO: Copying source files from ${PWD}/${XSCT_WS}/ to ${PWD}/baremetal"; \
 		for d in `ls -d ${XSCT_WS} | grep -v hw | grep -v bsp`; do \
 			mkdir -p baremetal/$${d}; \
 			cp -r ${XSCT_WS}/$${d}/src baremetal/$${d}/ \

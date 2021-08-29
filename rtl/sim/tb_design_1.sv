@@ -63,24 +63,23 @@
 `define DMA_S2MM_TAILDESC     8'h30
 `define DMA_S2MM_TAILDESC_MSB 8'h34
 
-`define ZYNQ_INSTANCE tb_top.top.bd_inst.design_1_i.processing_system7_0.inst
+`define ZYNQ_INSTANCE tb_design_1.bd_wrapper.design_1_i.processing_system7_0.inst
 `define NUM_FCLK 1
 
 `uselib lib=unisims_ver
 
-module tb_top;
+module tb_design_1;
   reg                     [0:0] r_ps_clk      ;
   reg                     [0:0] r_ps_aresetn  ;
   wire                          w_ps_clk      ;
   wire                          w_ps_aresetn  ;
   logic  [ `RESP_BUS_WIDTH-1:0] response    ;
-//  logic                       i2s_in_data;
-//  logic                       i2s_in_mclk;
-//  logic                       i2s_in_bclk;
-//  logic                       i2s_in_lrck;
+//  logic                [31:0] i2s_in_tdata_i2s ;
+//  logic                       i2s_in_tvalid_i2s;
+//  logic                       i2s_in_tlast_i2s ;
+//  logic                       i2s_in_tready_i2s;
 
-// projet_implementation_top_sv top(
-  projet_implementation_top_vhdl top(
+  design_1_wrapper bd_wrapper(
     .DDR_addr()
   , .DDR_ba()
   , .DDR_cas_n()
@@ -102,10 +101,10 @@ module tb_top;
   , .FIXED_IO_ps_clk(w_ps_clk)
   , .FIXED_IO_ps_porb(w_ps_aresetn)
   , .FIXED_IO_ps_srstb(w_ps_aresetn)
-  //, .i2s_in_mclk  (i2s_in_mclk )
-  //, .i2s_in_bclk  (i2s_in_bclk)
-  //, .i2s_in_lrck  (i2s_in_lrck)
-  //, .i2s_in_data  (i2s_in_data)
+  //, .i2s_in_tdata  (i2s_in_tdata)
+  //, .i2s_in_tvalid (i2s_in_tvalid)
+  //, .i2s_in_tlast  (i2s_in_tlast)
+  //, .i2s_in_tready (i2s_in_tready)
   );
 
 

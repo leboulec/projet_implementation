@@ -16,27 +16,29 @@ sim: build/vivado/import-synth.done
 	@echo "### INFO: Generating tcl script build/xsim/xsim.tcl"
 	@echo "log_wave -r *" > build/xsim/xsim.tcl
 	@echo "### INFO: Parsing simulation files"
-	@if [[ "${SIM_SV_FILES} ${SYNTH_SV_FILES}" == *[!\ ]* ]]; then                                                                                          \
-		xvlog -sv ${SIM_VLOG_OPT} ${SIM_SV_FILES} ${SYNTH_SV_FILES} -log build/xsim/systemverilog.log;                                                       \
-	fi;                                                                                                                                    \
-	if [[ "${SIM_VHDL_FILES} ${SYNTH_VHDL_FILES}" == *[!\ ]* ]]; then                                                                                         \
-		xvhdl ${SIM_VHDL_OPT} ${SIM_VHDL_FILES} ${SYNTH_VHDL_FILES} -log build/xsim/vhdl.log;                                                                  \
-	fi;                                                                                                                                    \
-	if [[ "${SIM_VHD_FILES} ${SYNTH_VHD_FILES}" == *[!\ ]* ]]; then                                                                                          \
-		xvhdl ${SIM_VHDL_OPT} ${SIM_VHD_FILES} ${SYNTH_VHD_FILES} -log build/xsim/vhd.log;                                                                    \
-	fi;                                                                                                                                    \
-	if [[ "${SIM_V_FILES} ${SYNTH_V_FILES}" == *[!\ ]* ]]; then                                                                                            \
-		xvlog ${SIM_VLOG_OPT} ${SIM_V_FILES} ${SYNTH_V_FILES} -log build/xsim/verilog.log;                                                                  \
-	fi
 	@xvhdl ${SIM_VHDL_OPT} -prj build/vivado/sim/build/xsim/vhdl.prj -log build/xsim/xvhdl.log
 	@xvlog ${SIM_VLOG_OPT} -prj build/vivado/sim/build/xsim/vlog.prj -log build/xsim/xvlog.log
+	@bd_wrapper_verilog=`find build/vivado/build/hdl -name *.v`; \
+	bd_wrapper_vhdl=`find build/vivado/build/hdl -name *.vhd`; \
+	if [[ "$${bd_wrapper_verilog} ${SIM_V_FILES} ${SYNTH_V_FILES}" == *[!\ ]* ]]; then \
+		xvlog ${SIM_VLOG_OPT} $${bd_wrapper_verilog} ${SIM_V_FILES} ${SYNTH_V_FILES} -log build/xsim/verilog.log; \
+	fi; \
+	if [[ "${SIM_SV_FILES} ${SYNTH_SV_FILES}" == *[!\ ]* ]]; then \
+		xvlog -sv ${SIM_VLOG_OPT} ${SIM_SV_FILES} ${SYNTH_SV_FILES} -log build/xsim/systemverilog.log; \
+	fi; \
+	if [[ "${SIM_VHDL_FILES} ${SYNTH_VHDL_FILES}" == *[!\ ]* ]]; then \
+		xvhdl ${SIM_VHDL_OPT} ${SIM_VHDL_FILES} ${SYNTH_VHDL_FILES} -log build/xsim/vhdl.log; \
+	fi; \
+	if [[ "$${bd_wrapper_vhdl} ${SIM_VHD_FILES} ${SYNTH_VHD_FILES}" == *[!\ ]* ]]; then \
+		xvhdl ${SIM_VHDL_OPT} $${bd_wrapper_vhdl} ${SIM_VHD_FILES} ${SYNTH_VHD_FILES} -log build/xsim/vhd.log; \
+	fi
 	@echo "### INFO: Elaborating design with top: ${SIM_TOP}"
 	@xelab ${SIM_ELAB_OPT}
 	@echo "### INFO: Launching simulation with top: ${SIM_TOP}"
-	@if [ "${SIM_MODE}" == "gui" ]; then                                                                                                    \
+	@if [ "${SIM_MODE}" == "gui" ]; then \
 		xsim ${SIM_TOP} ${PROTOINST_DECLARE} -tclbatch build/xsim/xsim.tcl -gui -log build/xsim/xsim.log -wdb build/xsim/${SIM_TOP}.wdb; \
-	else                                                                                                                                   \
-		xsim ${SIM_TOP}_sim ${PROTOINST_DECLARE} -R -log build/xsim/xsim.log -wdb build/xsim/${SIM_TOP}.wdb;                                 \
+	else \
+		xsim ${SIM_TOP}_sim ${PROTOINST_DECLARE} -R -log build/xsim/xsim.log -wdb build/xsim/${SIM_TOP}.wdb; \
 	fi;
 
 sim-clean:
