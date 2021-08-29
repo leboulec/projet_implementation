@@ -64,9 +64,9 @@ design_1_wrapper bd_inst( .DDR_addr          (DDR_addr)
                         , .FIXED_IO_ps_srstb (FIXED_IO_ps_srstb)
                         // user added ports
                         //, .i2s_in_mclk (i2s_in_mclk)
-                        //, .i2s_in_bclk (i2s_in_mclk)
-                        //, .i2s_in_lrck (i2s_in_mclk)
-                        //, .i2s_in_data (i2s_in_mclk)
+                        //, .i2s_in_bclk (i2s_in_bclk)
+                        //, .i2s_in_lrck (i2s_in_lrck)
+                        //, .i2s_in_data (i2s_in_data)
                         );
 
 // i2s_input i2s_input( .clk (?)
@@ -77,7 +77,7 @@ design_1_wrapper bd_inst( .DDR_addr          (DDR_addr)
 //                    , .lrck(i2s_in_lrck)
 //                    , .i2s_in_tdata (i2s_in_tdata)
 //                    , .i2s_in_tvalid(i2s_in_tvalid)
-//                    , .i2s_in_tready(i2s_in_tvalid)
+//                    , .i2s_in_tready(i2s_in_tready)
 //                    , .i2s_in_tlast (i2s_in_last)
 //                    );
 
