@@ -77,12 +77,24 @@ Generating bitstream
   make vivado-all TOP=<top entity>
 ```
   This will generate bitstream and hardware definition files.
-  Default value for TOP: design\_1\_wrapper
+  Default value for TOP: projet\_implementation\_top\_vhdl
 
 Execute Vivado in GUI mode
 ----
 ```bash
   make vivado-gui
+```
+
+Open synthetized design in GUI
+----
+```bash
+  make vivado-gui-synth
+```
+
+Open implemented design in GUI
+----
+```bash
+  make vivado-gui-impl
 ```
 
 Cleaning Vivado output products
