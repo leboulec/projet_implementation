@@ -11,3 +11,4 @@ xsim.dir/
 *.zip
 *.xml
 *.str
+.ip_user_files/

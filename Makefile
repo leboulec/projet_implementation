@@ -21,7 +21,7 @@ BR2_DEFCONFIG  ?= zynq_zedboard_defconfig
 all: buildroot-update
 
 clean: vivado-clean xsct-clean buildroot-clean sim-clean
-	@rm -rf *.html *.xml *.zip .Xil/ build/ *.str
+	@rm -rf *.html *.xml *.zip .Xil/ build/ *.str .ip_user_files/
 
 include mk/find-files.mk
 include mk/vivado.mk
