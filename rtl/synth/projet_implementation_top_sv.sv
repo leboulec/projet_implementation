@@ -7,27 +7,27 @@
 `timescale 1 ps / 1 ps
 
 module projet_implementation_top_sv
-( inout DDR_addr[14:0]
-, inout DDR_ba  [2:0]
-, inout DDR_cas_n
-, inout DDR_ck_n
-, inout DDR_ck_p
-, inout DDR_cke
-, inout DDR_cs_n
-, inout DDR_dm[3:0]
-, inout DDR_dq[31:0]
-, inout DDR_dqs_n[3:0]
-, inout DDR_dqs_p[3:0]
-, inout DDR_odt
-, inout DDR_ras_n
-, inout DDR_reset_n
-, inout DDR_we_n
-, inout FIXED_IO_ddr_vrn
-, inout FIXED_IO_ddr_vrp
-, inout FIXED_IO_mio
-, inout FIXED_IO_ps_clk
-, inout FIXED_IO_ps_porb
-, inout FIXED_IO_ps_srstb
+( inout [14:0] DDR_addr
+, inout  [2:0] DDR_ba
+, inout        DDR_cas_n
+, inout        DDR_ck_n
+, inout        DDR_ck_p
+, inout        DDR_cke
+, inout        DDR_cs_n
+, inout  [3:0] DDR_dm
+, inout [31:0] DDR_dq
+, inout  [3:0] DDR_dqs_n
+, inout  [3:0] DDR_dqs_p
+, inout        DDR_odt
+, inout        DDR_ras_n
+, inout        DDR_reset_n
+, inout        DDR_we_n
+, inout        FIXED_IO_ddr_vrn
+, inout        FIXED_IO_ddr_vrp
+, inout        FIXED_IO_mio
+, inout        FIXED_IO_ps_clk
+, inout        FIXED_IO_ps_porb
+, inout        FIXED_IO_ps_srstb
 // user added ports
 //, output i2s_in_mclk
 //, output i2s_in_bclk

@@ -85,7 +85,7 @@ build/vivado/script/import_ips.tcl: ${SYNTH_XCI_FILES} | build/vivado/script
 		echo "read_ip build/vivado/build/`basename $${f}`" >> $@; \
 		echo "set_property part ${PART} [current_project]" >> $@; \
 		echo "set_property board_part ${BOARD} [current_project]" >> $@; \
-		echo "set_property target_language VHDL [current_project]" >> $@; \
+		echo "set_property target_language ${RTL_LANGUAGE} [current_project]" >> $@; \
 		echo "upgrade_ip -force [get_files build/vi	vado/`basename $${f}`]" >> $@; \
 		echo "generate_target all [get_files build/vivado/`basename $${f}`] -force" >> $@; \
 		echo "export_ip_user_files -of_objects [get_files build/vivado/build/`basename $${f}`] -no_script -force" >> $@; \
@@ -106,12 +106,16 @@ build/vivado/script/import_bds.tcl: ${SYNTH_BD_FILES} | build/vivado/script
 		echo "read_bd build/vivado/build/`basename $${f}`" >> $@; \
 		echo "set_property part ${PART} [current_project]" >> $@; \
 		echo "set_property board_part ${BOARD} [current_project]" >> $@; \
-		echo "set_property target_language VHDL [current_project]" >> $@; \
+		echo "set_property target_language ${RTL_LANGUAGE} [current_project]" >> $@; \
 		echo "generate_target all [get_files build/vivado/build/`basename $${f}`] -force" >> $@; \
 		echo "export_ip_user_files -of_objects [get_files build/vivado/build/`basename $${f}`] -no_script -force" >> $@; \
 		echo "export_simulation -directory \"build/vivado/sim\" -of_objects [get_files build/vivado/build/`basename $${f}`] -simulator xsim -force" >> $@; \
 		echo "make_wrapper -files [get_files build/vivado/build/`basename $${f}`] -top" >> $@; \
-		echo "read_vhdl build/vivado/build/hdl/$$(basename $${f%.*})_wrapper.vhd" >> $@; \
+		if [[ "${RTL_LANGUAGE}" == "VHDL" ]]; then \
+			echo "read_vhdl build/vivado/build/hdl/$$(basename $${f%.*})_wrapper.vhd" >> $@; \
+		else \
+			echo "read_verilog build/vivado/build/hdl/$$(basename $${f%.*})_wrapper.v" >> $@; \
+		fi; \
 		echo "cp build/vivado/build/`basename $${f}` $${f}" >> build/vivado/script/save_bds.sh; \
 	done
 
@@ -169,14 +173,14 @@ build/vivado/script/impl.tcl: build/vivado/script/synth.tcl
 build/vivado/import-synth.done: build/vivado/script/import_synth.tcl
 	@rm -rf build/vivado/sim
 	@echo "### INFO: importing and generate synthetisable files"
-	@vivado -mode batch -source build/vivado/script/import_synth.tcl
+	@vivado -mode batch -source build/vivado/script/import_synth.tcl -nojournal -nolog
 	@echo "DONE" > build/vivado/import-synth.done
 
 build/vivado/build/synth.dcp: build/vivado/script/synth.tcl
 	@rm -rf build/vivado/sim
 	@echo "### INFO: Launching synthesis with top level module: ${TOP}"
 	@mkdir -p build/vivado/synth_out
-	@vivado -mode batch -source build/vivado/script/synth.tcl -nojournal -nolog
+	@vivado -mode batch -source build/vivado/script/synth.tcl -nojournal -log build/vivado/synth_out/synth.log
 	@echo "### INFO: Synthesis terminated succesfully with top level module: ${TOP}"
 	@echo "DONE" > build/vivado/import-synth.done
 
@@ -184,7 +188,7 @@ build/vivado/build/synth.dcp: build/vivado/script/synth.tcl
 build/vivado/build/impl.dcp: build/vivado/script/impl.tcl build/vivado/build/synth.dcp
 	@mkdir -p build/vivado/impl_out
 	@echo "### INFO: Launching implementation for top level module: ${TOP}"
-	@vivado -mode batch -source build/vivado/script/impl.tcl -nojournal -nolog build/vivado/build/synth.dcp
+	@vivado -mode batch -source build/vivado/script/impl.tcl -nojournal build/vivado/build/synth.dcp -log build/vivado/impl_out/impl.log
 	@cp build/vivado/bitstream.bit os/board/${BR2_BOARD}/fpga.bit
 	@echo "### INFO: Bitstream and hardware definition file successfully created for top level module: ${TOP}"
 
