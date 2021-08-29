@@ -286,10 +286,6 @@ Usefull documentation links
 - [Zedboard user guide](https://reference.digilentinc.com/_media/zedboard:zedboard_ug.pdf)
 - [Buildroot manual](https://buildroot.org/downloads/manual/manual.html)
 
-TODO list
-----
-- Add support of cosimulation by replacing automatically in flow the Zynq VIP instance by a systemC model and connect that to (built by flow) [xilinx qemu](https://github.com/Xilinx/qemu.git). An available tutorial for petalinux can be found [here](https://blog.reds.ch/?p=1180). This tutorial doesn't meet our requirements (it use the pretty expensive Mentor QuestaSim when we want to use only free Xilinx tools for now).
-
 LICENSE
 ----
 This software is distributed with an Apache License 2.0 physically represented by the `LICENSE` file.
