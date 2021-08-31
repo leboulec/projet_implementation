@@ -9,7 +9,7 @@ User files
 - `os` folder contains buildroot packages and configs used
   - `configs` contains defconfigs for supported boards (here only zynq-zedboard is supported)
   - `board` contains scripts for post build or pre build
-    - `<board name>` contains files specific to board supported (initially there is only zynq-zedboard)
+    - `<board name>` contains files specific to board supported (initially there is only `zynq-zedboard`)
   - `package` contains all buildroot packages
 - `mk` folder contains all mandatory makefiles for this project:
   - `vivado.mk` contains all targets for generating IP and BLOCK DESIGN output products then making bitstream
@@ -65,6 +65,31 @@ If gmake is not present in /bin, you can create a symbolic link yourself:
   sudo ln -s /bin/make /bin/gmake
 ```
 
+Makefile parameters
+----
+- `TOP` : Top level RTL module for synthesis (default: `projet_implementation_vhdl`)
+- `PART` : FPGA (PL) target (default: `xc7z020clg484-1`)
+- `BOARD` : Vivado board id (default: `em.avnet.com:zed:part0:1.3`)
+- `RTL_LANGUAGE` : Preferred RTL language for generated files, must be `VHDL` or `Verilog` (default: `VHDL`)
+- `SIM_MODE` : Simulation mode. Must be `gui` or `console` (default: `gui`)
+- `SIM_TOP` : Simulation top level RTL module (default: `tb_top`)
+- `XSCT_BOARD` : XSCT board name (default: `zedboard`)
+- `BR2_BOARD` : Buildroot board name (default: `zynq-zedboard`)
+- `BR2_DEFCONFIG` : Buildroot defconfig to use (default: `zynq_zedboard_defconfig`)
+
+Example files
+----
+- RTL synthetizable files:
+  - `rtl/synth/projet_implementation_top_vhdl.vhd`: Top level entity in VHDL
+  - `rtl/synth/projet_implementation_top_sv.sv`: Top level entity in System Verilog
+	- `rtl/synth/simple_adder.vhd`: Simple module example in VHDL
+- RTL Simulation files:
+  - `rtl/sim/tb_top.sv`: Top level test-bench (including Zynq VIP)
+  - `rtl/sim/tb_design_1.sv`: Block design test-bench (including Zynq VIP)
+  - `rtl/sim/tb_simple_adder.vhd`: Testbench of simple module example (`simple_adder.vhd`)
+- Baremetal sofware projects:
+	- `helloworld`: Demonstrate how to print hello world with Zynq PS
+
 Before initial manipulation:
 ----
 ```bash
@@ -77,7 +102,7 @@ Generating bitstream
   make vivado-all TOP=<top entity>
 ```
   This will generate bitstream and hardware definition files.
-  Default value for TOP: projet\_implementation\_top\_vhdl
+  Default value for `TOP`: `projet_implementation_top_vhdl`
 
 Execute Vivado in GUI mode
 ----
@@ -109,8 +134,8 @@ Behavioral simulation using XSIM (Xilinx Simulator):
   make sim SIM_TOP=<simulation_top_entity> SIM_MODE=<gui|cli>
 ```
   Launch behavioral simulation.
-  Default value for SIM\_TOP: tb\_top
-  Default value for SIM\_MODE: gui.
+  Default value for `SIM_TOP`: `tb_top`
+  Default value for `SIM_MODE`: `gui`
 
 Cleaning simulation files
 ----
