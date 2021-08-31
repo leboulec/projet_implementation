@@ -82,13 +82,13 @@ Example files
 - RTL synthetizable files:
   - `rtl/synth/projet_implementation_top_vhdl.vhd`: Top level entity in VHDL
   - `rtl/synth/projet_implementation_top_sv.sv`: Top level entity in System Verilog
-	- `rtl/synth/simple_adder.vhd`: Simple module example in VHDL
+  - `rtl/synth/simple_adder.vhd`: Simple module example in VHDL
 - RTL Simulation files:
   - `rtl/sim/tb_top.sv`: Top level test-bench (including Zynq VIP)
   - `rtl/sim/tb_design_1.sv`: Block design test-bench (including Zynq VIP)
   - `rtl/sim/tb_simple_adder.vhd`: Testbench of simple module example (`simple_adder.vhd`)
 - Baremetal sofware projects:
-	- `helloworld`: Demonstrate how to print hello world with Zynq PS
+  - `helloworld`: Demonstrate how to print hello world with Zynq PS
 
 Before initial manipulation:
 ----
