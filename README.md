@@ -102,6 +102,7 @@ Generating bitstream
   make vivado-all TOP=<top entity>
 ```
   This will generate bitstream and hardware definition files.
+
   Default value for `TOP`: `projet_implementation_top_vhdl`
 
 Execute Vivado in GUI mode
@@ -134,7 +135,9 @@ Behavioral simulation using XSIM (Xilinx Simulator):
   make sim SIM_TOP=<simulation_top_entity> SIM_MODE=<gui|cli>
 ```
   Launch behavioral simulation.
+
   Default value for `SIM_TOP`: `tb_top`
+
   Default value for `SIM_MODE`: `gui`
 
 Cleaning simulation files
@@ -237,7 +240,8 @@ Building all
   make TOP=<top_entity>
 ```
 Build bitstream, hardware definition file, FSBL, device-tree and buildroot distribution.
-Default value for TOP: design\_1\_wrapper
+
+Default value for `TOP`: `projet_implementation_top_vhdl`
 
 Cleaning all files
 ----
