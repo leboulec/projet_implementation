@@ -86,7 +86,7 @@ Example files
 - RTL Simulation files:
   - `rtl/sim/tb_top.sv`: Top level test-bench (including Zynq VIP)
   - `rtl/sim/tb_design_1.sv`: Block design test-bench (including Zynq VIP)
-  - `rtl/sim/tb_simple_adder.vhd`: Testbench of simple module example (`rtl/synth/simple_adder.vhd`)
+  - `rtl/sim/tb_simple_adder.vhd`: Testbench of simple module example: `rtl/synth/simple_adder.vhd`
 - Baremetal sofware projects:
   - `baremetal/helloworld`: Demonstrate how to print hello world with Zynq PS
 
