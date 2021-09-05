@@ -38,7 +38,7 @@ sim: build/vivado/import-synth.done
 	@if [ "${SIM_MODE}" == "gui" ]; then \
 		xsim ${SIM_TOP} ${PROTOINST_DECLARE} -tclbatch build/xsim/xsim.tcl -gui -log build/xsim/xsim.log -wdb build/xsim/${SIM_TOP}.wdb; \
 	else \
-		xsim ${SIM_TOP}_sim ${PROTOINST_DECLARE} -R -log build/xsim/xsim.log -wdb build/xsim/${SIM_TOP}.wdb; \
+		xsim ${SIM_TOP} ${PROTOINST_DECLARE} -R -log build/xsim/xsim.log -wdb build/xsim/${SIM_TOP}.wdb; \
 	fi;
 
 sim-clean:
