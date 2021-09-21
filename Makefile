@@ -1,5 +1,8 @@
 # Copyright 2021 Raphaël Bresson
 
+# Force Makefile to use bash
+SHELL := /bin/bash
+
 # VIVADO USER CONFIG
 TOP        ?= projet_implementation_top_vhdl
 PART       ?= xc7z020clg484-1
