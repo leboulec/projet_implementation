@@ -183,7 +183,7 @@ xsct-clean: xsct-clean-workspace
 	@echo "### INFO: Cleaning xsct folder"
 	@rm -rf build/xsct
 
-xsct-xsdk: ${XSCT_WS}/${XSCT_HW_NAME}/system.hdf
+xsct-xsdk: ${XSCT_WS}/${XSCT_HW_NAME}/system.hdf ${XSCT_WS}/${XSCT_BSP_NAME}/system.mss
 	@xsdk -workspace ${XSCT_WS}
 	@echo "Would you like to save the modified files? [y, N]"
 	@read rc; \
