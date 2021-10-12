@@ -191,7 +191,7 @@ xsct-xsdk: ${XSCT_WS}/${XSCT_HW_NAME}/system.hdf
 		echo "### INFO: Copying source files from ${PWD}/${XSCT_WS}/ to ${PWD}/baremetal"; \
 		for d in `ls -d ${XSCT_WS} | grep -v hw | grep -v bsp`; do \
 			mkdir -p baremetal/$${d}; \
-			cp -r ${XSCT_WS}/$${d}/src baremetal/$${d}/ \
+			cp -r ${XSCT_WS}/$${d}/src baremetal/$${d}/; \
 		done \
 	else \
 		echo "### INFO: Modified files from ${PWD}/${XSCT_WS}/ not saved"; \

@@ -180,7 +180,7 @@ Refer to the following links to use interactive mode
 Executing Xilinx SDK in gui mode
 ----
 ```bash
-  make xsct-sdk
+  make xsct-xsdk
 ```
 
 Cleaning baremetal workspace
