@@ -14,7 +14,7 @@ build/vivado/script/import_xdc.tcl: ${CONSTR_XDC_FILES} | build/vivado/script
 	@touch $@
 	@rm -f build/vivado/script/save_xdc.sh
 	@touch build/vivado/script/save_xdc.sh
-	@for f in `find rtl/synth -name *.xdc`; do \
+	@for f in `find rtl/constr -name *.xdc`; do \
 	  cp $${f} build/vivado/build/; \
 		echo "read_xdc build/vivado/build/`basename $${f}`" >> $@; \
 		echo "cp build/vivado/build/`basename $${f}` $${f}" >> build/vivado/script/save_xdc.sh; \
