@@ -184,20 +184,20 @@
 # ----------------------------------------------------------------------------
 # VGA Output - Bank 33
 # ----------------------------------------------------------------------------
-#set_property PACKAGE_PIN Y21  [get_ports {VGA_B1}];  # "VGA-B1"
+set_property PACKAGE_PIN Y21  [get_ports {b}];  # "VGA-B1"
 #set_property PACKAGE_PIN Y20  [get_ports {VGA_B2}];  # "VGA-B2"
 #set_property PACKAGE_PIN AB20 [get_ports {VGA_B3}];  # "VGA-B3"
 #set_property PACKAGE_PIN AB19 [get_ports {VGA_B4}];  # "VGA-B4"
-#set_property PACKAGE_PIN AB22 [get_ports {VGA_G1}];  # "VGA-G1"
+set_property PACKAGE_PIN AB22 [get_ports {g}];  # "VGA-G1"
 #set_property PACKAGE_PIN AA22 [get_ports {VGA_G2}];  # "VGA-G2"
 #set_property PACKAGE_PIN AB21 [get_ports {VGA_G3}];  # "VGA-G3"
 #set_property PACKAGE_PIN AA21 [get_ports {VGA_G4}];  # "VGA-G4"
-#set_property PACKAGE_PIN AA19 [get_ports {VGA_HS}];  # "VGA-HS"
-#set_property PACKAGE_PIN V20  [get_ports {VGA_R1}];  # "VGA-R1"
+set_property PACKAGE_PIN AA19 [get_ports {hsync}];  # "VGA-HS"
+set_property PACKAGE_PIN V20  [get_ports {r}];  # "VGA-R1"
 #set_property PACKAGE_PIN U20  [get_ports {VGA_R2}];  # "VGA-R2"
 #set_property PACKAGE_PIN V19  [get_ports {VGA_R3}];  # "VGA-R3"
 #set_property PACKAGE_PIN V18  [get_ports {VGA_R4}];  # "VGA-R4"
-#set_property PACKAGE_PIN Y19  [get_ports {VGA_VS}];  # "VGA-VS"
+set_property PACKAGE_PIN Y19  [get_ports {vsync}];  # "VGA-VS"
 
 # ----------------------------------------------------------------------------
 # User Push Buttons - Bank 34
