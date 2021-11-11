@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xCC6CFA5306BD3ECB",
+      "boundary_crc": "0x1E7908FFD23E9DD5",
       "device": "xc7z020clg484-1",
       "name": "design_1",
       "synth_flow_mode": "None",
@@ -9,7 +9,8 @@
       "validated": "true"
     },
     "design_tree": {
-      "processing_system7_0": ""
+      "processing_system7_0": "",
+      "proc_sys_reset_0": ""
     },
     "interface_ports": {
       "DDR": {
@@ -73,6 +74,46 @@
           "CAN_DEBUG": {
             "value": "false",
             "value_src": "default"
+          }
+        }
+      }
+    },
+    "ports": {
+      "aclk_0": {
+        "type": "clk",
+        "direction": "O",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "design_1_processing_system7_0_0_FCLK_CLK0",
+            "value_src": "default_prop"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "user_prop"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.000",
+            "value_src": "default"
+          }
+        }
+      },
+      "aresetn_0": {
+        "type": "rst",
+        "direction": "O",
+        "left": "0",
+        "right": "0",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_LOW",
+            "value_src": "const_prop"
           }
         }
       }
@@ -192,6 +233,12 @@
           },
           "PCW_ENET_RESET_SELECT": {
             "value": "Share reset pin"
+          },
+          "PCW_EN_CLK1_PORT": {
+            "value": "0"
+          },
+          "PCW_EN_CLK2_PORT": {
+            "value": "0"
           },
           "PCW_EN_EMIO_TTC0": {
             "value": "1"
@@ -865,6 +912,9 @@
           "PCW_USB_RESET_SELECT": {
             "value": "Share reset pin"
           },
+          "PCW_USE_DMA0": {
+            "value": "0"
+          },
           "PCW_USE_M_AXI_GP0": {
             "value": "0"
           },
@@ -872,6 +922,10 @@
             "value": "ZedBoard"
           }
         }
+      },
+      "proc_sys_reset_0": {
+        "vlnv": "xilinx.com:ip:proc_sys_reset:5.0",
+        "xci_name": "design_1_proc_sys_reset_0_0"
       }
     },
     "interface_nets": {
@@ -885,6 +939,27 @@
         "interface_ports": [
           "DDR",
           "processing_system7_0/DDR"
+        ]
+      }
+    },
+    "nets": {
+      "processing_system7_0_FCLK_CLK0": {
+        "ports": [
+          "processing_system7_0/FCLK_CLK0",
+          "aclk_0",
+          "proc_sys_reset_0/slowest_sync_clk"
+        ]
+      },
+      "processing_system7_0_FCLK_RESET0_N": {
+        "ports": [
+          "processing_system7_0/FCLK_RESET0_N",
+          "proc_sys_reset_0/ext_reset_in"
+        ]
+      },
+      "proc_sys_reset_0_peripheral_aresetn": {
+        "ports": [
+          "proc_sys_reset_0/peripheral_aresetn",
+          "aresetn_0"
         ]
       }
     }

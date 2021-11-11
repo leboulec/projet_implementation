@@ -2,8 +2,8 @@
 `timescale 1 ps / 1 ps
 
 `define RESET_DELAY 1000
-`define STOP_DELAY 1000
-`define INIT_DELAY  400
+`define STOP_DELAY 100000
+`define INIT_DELAY  2000
 `define INTERRUPT_DELAY 40
 
 // values to modify with real addresses (defined in block design)
@@ -74,6 +74,8 @@ module tb_design_1;
   wire                          w_ps_clk      ;
   wire                          w_ps_aresetn  ;
   logic  [ `RESP_BUS_WIDTH-1:0] response    ;
+  logic       aclk_0;
+  logic [0:0] aresetn_0;
 //  logic                [31:0] i2s_in_tdata_i2s ;
 //  logic                       i2s_in_tvalid_i2s;
 //  logic                       i2s_in_tlast_i2s ;
@@ -101,6 +103,8 @@ module tb_design_1;
   , .FIXED_IO_ps_clk(w_ps_clk)
   , .FIXED_IO_ps_porb(w_ps_aresetn)
   , .FIXED_IO_ps_srstb(w_ps_aresetn)
+  , .aclk_0(aclk_0)
+  , .aresetn_0(aresetn_0)
   //, .i2s_in_tdata  (i2s_in_tdata)
   //, .i2s_in_tvalid (i2s_in_tvalid)
   //, .i2s_in_tlast  (i2s_in_tlast)
