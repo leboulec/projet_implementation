@@ -96,28 +96,28 @@ ${XSCT_FOLDER}/build-bm-${BM_PROJECT}.tcl: ${XSCT_FOLDER}/create-bm-${BM_PROJECT
 
 ${XSCT_FOLDER}/run-bm-${BM_PROJECT}.tcl: | ${XSCT_WS}
 	@echo "### INFO: Generating tcl script ${PWD}/$@"
-	@echo "connect"                                                                         > $@
-	@echo "puts [targets]"                                                                 >> $@
-	@echo "targets -set -nocase -filter {name =~ \"ARM* #0\"}"                             >> $@
-	@echo "rst -system"                                                                    >> $@
-	@echo "fpga -f build/vivado/bitstream.bit"                                             >> $@
-	@echo "namespace eval xsdb {source ${XSCT_WS}/${XSCT_HW_NAME}/ps7_init.tcl; ps7_init}" >> $@
-	@echo "dow ${XSCT_WS}/${BM_PROJECT}/Debug/${BM_PROJECT}.elf"                           >> $@
-	@echo "bpadd -addr &main"                                                              >> $@
-	@echo "con -block"                                                                     >> $@
-	@echo "con"                                                                            >> $@
+	@echo "connect"                                                                                    > $@
+	@echo "puts [targets]"                                                                            >> $@
+	@echo "targets -set -nocase -filter {name =~ \"ARM* #0\"}"                                        >> $@
+	@echo "rst -system"                                                                               >> $@
+	@echo "fpga -f build/vivado/bitstream.bit"                                                        >> $@
+	@echo "source ${XSCT_WS}/${XSCT_HW_NAME}/ps7_init.tcl; ps7_init; ps7_post_config; rst -processor" >> $@
+	@echo "dow ${XSCT_WS}/${BM_PROJECT}/Debug/${BM_PROJECT}.elf"                                      >> $@
+	@echo "bpadd -addr &main"                                                                         >> $@
+	@echo "con -block"                                                                                >> $@
+	@echo "con"                                                                                       >> $@
 
 ${XSCT_FOLDER}/debug-bm-${BM_PROJECT}.tcl: | ${XSCT_WS}
 	@echo "### INFO: Generating tcl script ${PWD}/$@"
-	@echo "connect"                                                                         > $@
-	@echo "puts [targets]"                                                                 >> $@
-	@echo "targets -set -nocase -filter {name =~ \"ARM* #0\"}"                             >> $@
-	@echo "rst -system"                                                                    >> $@
-	@echo "fpga -f build/vivado/bitstream.bit"                                             >> $@
-	@echo "source ${XSCT_WS}/${XSCT_HW_NAME}/ps7_init.tcl"                                 >> $@
-	@echo "ps7_init"                                                                       >> $@
-	@echo "dow ${XSCT_WS}/${BM_PROJECT}/Debug/${BM_PROJECT}.elf"                           >> $@
-	@echo "bpadd -addr &main"                                                              >> $@
+	@echo "connect"                                                                          > $@
+	@echo "puts [targets]"                                                                  >> $@
+	@echo "targets -set -nocase -filter {name =~ \"ARM* #0\"}"                              >> $@
+	@echo "rst -system"                                                                     >> $@
+	@echo "fpga -f build/vivado/bitstream.bit"                                              >> $@
+	@echo "source ${XSCT_WS}/${XSCT_HW_NAME}/ps7_init.tcl; ps7_post_config; rst -processor" >> $@
+	@echo "ps7_init"                                                                        >> $@
+	@echo "dow ${XSCT_WS}/${BM_PROJECT}/Debug/${BM_PROJECT}.elf"                            >> $@
+	@echo "bpadd -addr &main"                                                               >> $@
 
 ${XSCT_FOLDER}/clean-bm-project.tcl: | ${XSCT_WS}
 	@echo "### INFO: Generating tcl script ${PWD}/$@"

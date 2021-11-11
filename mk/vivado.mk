@@ -178,6 +178,7 @@ build/vivado/import-synth.done: build/vivado/script/import_synth.tcl
 
 build/vivado/build/synth.dcp: build/vivado/script/synth.tcl
 	@rm -rf build/vivado/sim
+	@rm -rf build/xsct
 	@echo "### INFO: Launching synthesis with top level module: ${TOP}"
 	@mkdir -p build/vivado/synth_out
 	@vivado -mode batch -source build/vivado/script/synth.tcl -nojournal -log build/vivado/synth_out/synth.log
