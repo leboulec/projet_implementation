@@ -86,7 +86,7 @@ build/vivado/script/import_ips.tcl: ${SYNTH_XCI_FILES} | build/vivado/script
 		echo "set_property part ${PART} [current_project]" >> $@; \
 		echo "set_property board_part ${BOARD} [current_project]" >> $@; \
 		echo "set_property target_language ${RTL_LANGUAGE} [current_project]" >> $@; \
-		echo "upgrade_ip -force [get_files build/vi	vado/`basename $${f}`]" >> $@; \
+		echo "upgrade_ip -force [get_files build/vivado/`basename $${f}`]" >> $@; \
 		echo "generate_target all [get_files build/vivado/`basename $${f}`] -force" >> $@; \
 		echo "export_ip_user_files -of_objects [get_files build/vivado/build/`basename $${f}`] -no_script -force" >> $@; \
 		echo "export_simulation -directory \"build/vivado/sim\" -of_objects [get_files build/vivado/build/`basename $${f}`] -simulator xsim -force" >> $@; \
@@ -122,7 +122,7 @@ build/vivado/script/import_bds.tcl: ${SYNTH_BD_FILES} | build/vivado/script
 # generate synthetisable files importer script
 build/vivado/script/import_synth.tcl: build/vivado/script/import_xdc.tcl build/vivado/script/import_vhd.tcl build/vivado/script/import_vhdl.tcl build/vivado/script/import_verilog.tcl build/vivado/script/import_system_verilog.tcl build/vivado/script/import_bds.tcl build/vivado/script/import_ips.tcl build/vivado/script/import_xdc.tcl
 	@echo "### INFO: Generating tcl script ${PWD}/$@"
-	@echo "source build/vivado/script/import_vhd.tcl"            >> $@
+	@echo "source build/vivado/script/import_vhd.tcl"            > $@
 	@echo "source build/vivado/script/import_vhdl.tcl"           >> $@
 	@echo "source build/vivado/script/import_verilog.tcl"        >> $@
 	@echo "source build/vivado/script/import_system_verilog.tcl" >> $@

@@ -15,8 +15,8 @@ SIM_VHD_FILES  = $(shell find ${PWD}/rtl/sim/ -name "*.vhd" )
 SIM_VHDL_FILES = $(shell find ${PWD}/rtl/sim/ -name "*.vhdl")
 
 
-GEN_PROTOINST_FILES = $(shell find ${PWD}/build/vivado/build/ -name ".protoinst")
-IPSHARED_DIR                = ${PWD}/build/vivado/build/ipshared
+GEN_PROTOINST_FILES = $(shell find ${PWD}/build/xsim/build/ -name ".protoinst")
+IPSHARED_DIR                = ${PWD}/build/xsim/build/ipshared
 GENERATED_IPSHARED_DIRNAMES = $(shell ls ${IPSHARED_DIR})
 GENERATED_IPSHARED_DIRS     = $(addprefix ${IPSHARED_DIR}/, ${GENERATED_IPSHARED_DIRNAMES})
 GENERATED_IPSHARED_HDLDIRS  = $(addsuffix /hdl , ${GENERATED_IPSHARED_DIRS})
