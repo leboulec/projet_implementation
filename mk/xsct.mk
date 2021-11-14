@@ -153,7 +153,7 @@ ${XSCT_FOLDER}/bm-verify-${BM_PROJECT}.done: | ${XSCT_WS}
 		echo "### EXEMPLE: BUILD: make xsct-baremetal-build BM_PROJECT=helloworld"; \
 		echo "### EXEMPLE: RUN: make xsct-baremetal-run BM_PROJECT=helloworld"; \
 		echo "### EXEMPLE: DEBUG: make xsct-baremetal-debug BM_PROJECT=helloworld"; \
-		echo "### INFO: All project must be placed in \"baremetal\" directory"; \
+		echo "### INFO: Any baremetal project must be placed in \"baremetal\" directory"; \
 		exit -1; \
 	fi
 
@@ -189,9 +189,10 @@ xsct-xsdk: ${XSCT_WS}/${XSCT_HW_NAME}/system.hdf ${XSCT_WS}/${XSCT_BSP_NAME}/sys
 	@read rc; \
 	if [[ "$${rc}" == @(y|Y) ]]; then \
 		echo "### INFO: Copying source files from ${PWD}/${XSCT_WS}/ to ${PWD}/baremetal"; \
-		for d in `ls -d ${XSCT_WS} | grep -v hw | grep -v bsp`; do \
-			mkdir -p baremetal/$${d}; \
-			cp -r ${XSCT_WS}/$${d}/src baremetal/$${d}/; \
+		for d in `ls -d ${XSCT_WS}/*/ | grep -v hw | grep -v bsp | grep -v TempFiles`; do \
+      proj_dir=$$(basename $${d}); \
+			mkdir -p baremetal/$${proj_dir}; \
+			cp -r ${XSCT_WS}/$${proj_dir}/src baremetal/$${proj_dir}/; \
 		done \
 	else \
 		echo "### INFO: Modified files from ${PWD}/${XSCT_WS}/ not saved"; \
