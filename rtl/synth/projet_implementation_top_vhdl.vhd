@@ -74,12 +74,12 @@ bd_inst: entity work.design_1_wrapper
             FIXED_IO_ps_porb => FIXED_IO_ps_porb,
             FIXED_IO_ps_srstb => FIXED_IO_ps_srstb,
             --FCLK => i2s_clk;
-            BTNU => i2s_rst;
             -- user added ports
-            i2s_in_tdata  => i2s_in_tdata,   -- ici faute
-            i2s_in_tvalid => i2s_in_tvalid,
-            i2s_in_tready => i2s_in_tready,
-            i2s_in_tlast  => i2s_in_tlast
+			FCLK_CLK2_0 => i2s_clk,
+            i2s_axis_0_tdata  => i2s_in_tdata,   -- ici faute
+            i2s_axis_0_tvalid => i2s_in_tvalid,
+            i2s_axis_0_tready => i2s_in_tready,
+            i2s_axis_0_tlast  => i2s_in_tlast
           );
 
 --- user modules instantiations
@@ -96,13 +96,14 @@ bd_inst: entity work.design_1_wrapper
            , m_axis_tlast  => i2s_in_tlast);
 
 i2s_out_inst : entity work.i2s_writer
-   port map( clk => GCLK
+   port map( clk => i2s_clk
            , reset => i2s_rst
            , dout => i2s_out_data
            , mclk_in => i2s_out_mclk
-           , bclk_in => i2s_out_bclk
+           , sclk_in => i2s_out_bclk
            , lrck_in => i2s_out_lrck
            , s_axis_tdata => i2s_in_tdata
            , s_axis_tvalid => i2s_in_tvalid
            , s_axis_tready => i2s_in_tready
            , s_axis_tlast  => i2s_in_tlast);
+end architecture;
