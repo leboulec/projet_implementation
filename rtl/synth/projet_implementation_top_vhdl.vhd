@@ -29,20 +29,27 @@ entity projet_implementation_top_vhdl is
         FIXED_IO_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
         FIXED_IO_ps_clk : inout STD_LOGIC;
         FIXED_IO_ps_porb : inout STD_LOGIC;
-        FIXED_IO_ps_srstb : inout STD_LOGIC
+        FIXED_IO_ps_srstb : inout STD_LOGIC;
         -- user added ports
-        -- i2s_in_mclk   : out std_logic;
-        -- i2s_in_bclk   : out std_logic;
-        -- i2s_in_lrck   : out std_logic;
-        -- i2s_in_data   : in  std_logic
+        i2s_in_mclk : out std_logic;
+        i2s_in_bclk : out std_logic;
+        i2s_in_lrck : out std_logic;
+        i2s_in_data : in  std_logic;
+
+        i2s_out_mclk : in std_logic;
+        i2s_out_bclk : in std_logic;
+        i2s_out_lrck : in std_logic;
+        i2s_out_data : out  std_logic
       );
 end entity;
 
 architecture top_arch of projet_implementation_top_vhdl is
-  -- signal i2s_in_tdata : std_logic_vector(31 downto 0);
-  -- signal i2s_in_tvalid : std_logic;
-  -- signal i2s_in_tready : std_logic;
-  -- signal i2s_in_tlast : std_logic;
+   signal i2s_in_tdata : std_logic_vector(31 downto 0);
+   signal i2s_in_tvalid : std_logic;
+   signal i2s_in_tready : std_logic;
+   signal i2s_in_tlast : std_logic;
+   signal i2s_clk : std_logic;
+   signal i2s_rst : std_logic;
 begin
 bd_inst: entity work.design_1_wrapper
   port map( DDR_addr(14 downto 0) => DDR_addr(14 downto 0),
@@ -65,25 +72,37 @@ bd_inst: entity work.design_1_wrapper
             FIXED_IO_mio(53 downto 0) => FIXED_IO_mio(53 downto 0),
             FIXED_IO_ps_clk => FIXED_IO_ps_clk,
             FIXED_IO_ps_porb => FIXED_IO_ps_porb,
-            FIXED_IO_ps_srstb => FIXED_IO_ps_srstb
+            FIXED_IO_ps_srstb => FIXED_IO_ps_srstb,
+            --FCLK => i2s_clk;
+            BTNU => i2s_rst;
             -- user added ports
-            -- i2s_in_tdata  => i2s_in_tdata
-            -- i2s_in_tvalid => i2s_in_tvalid
-            -- i2s_in_tready => i2s_in_tready
-            -- i2s_in_tlast  => i2s_in_tlast
+            i2s_in_tdata  => i2s_in_tdata,   -- ici faute
+            i2s_in_tvalid => i2s_in_tvalid,
+            i2s_in_tready => i2s_in_tready,
+            i2s_in_tlast  => i2s_in_tlast
           );
 
 --- user modules instantiations
--- i2s_in_inst : entity work.i2s_input
---   port map( clk => ?
---           , aresetn => ?
---           , din => i2s_in_data
---           , mclk => i2s_in_mclk
---           , bclk => i2s_in_bclk
---           , lrck => i2s_in_lrck
---           , m_axis_tdata => i2s_in_tdata
---           , m_axis_tvalid => i2s_in_tvalid
---           , m_axis_tready => i2s_in_tready
---           , m_axis_tlast  => i2s_in_tlast);
+ i2s_in_inst : entity work.i2s_reader
+   port map( clk => i2s_clk
+           , aresetn => i2s_rst
+           , din => i2s_in_data
+           , mclk => i2s_in_mclk
+           , bclk => i2s_in_bclk
+           , lrck => i2s_in_lrck
+           , m_axis_tdata => i2s_in_tdata
+           , m_axis_tvalid => i2s_in_tvalid
+           , m_axis_tready => i2s_in_tready
+           , m_axis_tlast  => i2s_in_tlast);
 
-end architecture;
+i2s_out_inst : entity work.i2s_writer
+   port map( clk => GCLK
+           , reset => i2s_rst
+           , dout => i2s_out_data
+           , mclk_in => i2s_out_mclk
+           , bclk_in => i2s_out_bclk
+           , lrck_in => i2s_out_lrck
+           , s_axis_tdata => i2s_in_tdata
+           , s_axis_tvalid => i2s_in_tvalid
+           , s_axis_tready => i2s_in_tready
+           , s_axis_tlast  => i2s_in_tlast);
