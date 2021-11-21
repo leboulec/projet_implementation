@@ -16,6 +16,51 @@ build/xsim:
 build/xsim/script: | build/xsim
 	@mkdir -p $@
 
+# generate VHDL .vhd files package importer script
+build/xsim/script/import_pkg_vhd.tcl: ${SYNTH_PKG_VHD_FILES} | build/xsim/script
+	@echo "### INFO: Generating tcl script ${PWD}/$@ and bash script ${PWD}/build/xsim/script/save_pkg_vhd.sh"
+	@rm -f $@
+	@touch $@
+	@rm -f build/xsim/script/save_pkg_vhd.sh
+	@touch build/xsim/script/save_pkg_vhd.sh
+	@for f in `find rtl/synth -name *.vhd`; do \
+	  cp $${f} build/xsim/build/; \
+		echo "read_vhdl build/xsim/build/`basename $${f}`" >> $@; \
+		echo "cp build/xsim/build/`basename $${f}` $${f}" >> build/xsim/script/save_pkg_vhd.sh; \
+	done
+
+# generate VHDL .vhdl files package importer script
+build/xsim/script/import_pkg_vhdl.tcl: ${SYNTH_PKG_VHDL_FILES} | build/xsim/script
+	@echo "### INFO: Generating tcl script ${PWD}/$@ and bash script ${PWD}/build/xsim/script/save_pkg_vhdl.sh"
+	@rm -f $@
+	@touch $@
+	@rm -f build/xsim/script/save_vhdl.sh
+	@touch build/xsim/script/save_vhdl.sh
+	@for f in `find rtl/synth -name *.vhdl`; do \
+		cp $${f} build/xsim/build/; \
+		echo "read_vhdl build/xsim/build/`basename $${f}`" >> $@; \
+		echo "cp build/xsim/build/`basename $${f}` $${f}" >> build/vivado/script/save_pkg_vhdl.sh; \
+	done
+
+# generate System Verilog .sv files package importer script
+build/xsim/script/import_pkg_sv.tcl: ${SYNTH_PKG_SV_FILES} | build/xsim/script
+	@echo "### INFO: Generating tcl script ${PWD}/$@ and bash script ${PWD}/build/xsim/script/save_pkg_sv.sh"
+	@rm -f $@
+	@touch $@
+	@rm -f build/xsim/script/save_vhdl.sh
+	@touch build/xsim/script/save_vhdl.sh
+	@for f in `find rtl/synth -name *.vhdl`; do \
+		cp $${f} build/xsim/build/; \
+		echo "read_verilog -sv build/xsim/build/`basename $${f}`" >> $@; \
+		echo "cp build/xsim/build/`basename $${f}` $${f}" >> build/xsim/script/save_pkg_sv.sh; \
+	done
+
+build/xsim/script/import_pkg.tcl: build/xsim/script/import_pkg_sv.tcl build/xsim/script/import_pkg_vhdl.tcl build/xsim/script/import_pkg_vhd.tcl
+	@echo "### INFO: Generating tcl script ${PWD}/$@"
+	@echo "source build/xsim/script/import_pkg_sv.tcl"    > $@
+	@echo "source build/xsim/script/import_pkg_vhd.tcl"  >> $@
+	@echo "source build/xsim/script/import_pkg_vhdl.tcl" >> $@
+
 # generate contraints .xdc files importer script
 build/xsim/script/import_xdc.tcl: ${CONSTR_XDC_FILES} | build/xsim/script
 	@echo "### INFO: Generating tcl script ${PWD}/$@"
@@ -104,9 +149,10 @@ build/xsim/script/import_bds.tcl: ${SYNTH_BD_FILES} | build/xsim/script
 	done
 
 
-build/xsim/script/import_synth.tcl: build/xsim/script/import_xdc.tcl build/xsim/script/import_vhd.tcl build/xsim/script/import_vhdl.tcl build/xsim/script/import_verilog.tcl build/xsim/script/import_system_verilog.tcl build/xsim/script/import_bds.tcl build/xsim/script/import_ips.tcl build/xsim/script/import_xdc.tcl
+build/xsim/script/import_synth.tcl: build/xsim/script/import_xdc.tcl build/xsim/script/import_vhd.tcl build/xsim/script/import_vhdl.tcl build/xsim/script/import_verilog.tcl build/xsim/script/import_system_verilog.tcl build/xsim/script/import_bds.tcl build/xsim/script/import_ips.tcl build/xsim/script/import_xdc.tcl build/xsim/script/import_pkg.tcl
 	@echo "### INFO: Generating tcl script ${PWD}/$@"
-	@echo "source build/xsim/script/import_vhd.tcl"            > $@
+	@echo "source build/xsim/script/import_pkg.tcl"            > $@
+	@echo "source build/xsim/script/import_vhd.tcl"            >> $@
 	@echo "source build/xsim/script/import_vhdl.tcl"           >> $@
 	@echo "source build/xsim/script/import_verilog.tcl"        >> $@
 	@echo "source build/xsim/script/import_system_verilog.tcl" >> $@
