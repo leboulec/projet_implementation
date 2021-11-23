@@ -76,6 +76,7 @@ bd_inst: entity work.design_1_wrapper
             --FCLK => i2s_clk;
             -- user added ports
 			FCLK_CLK2_0 => i2s_clk,
+			i2s_aresetn_0(0) => i2s_rst,
             i2s_axis_0_tdata  => i2s_in_tdata,   -- ici faute
             i2s_axis_0_tvalid => i2s_in_tvalid,
             i2s_axis_0_tready => i2s_in_tready,
