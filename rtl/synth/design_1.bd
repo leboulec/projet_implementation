@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x1E7908FFD23E9DD5",
+      "boundary_crc": "0x1E7908FF876AA177",
       "device": "xc7z020clg484-1",
       "name": "design_1",
       "synth_flow_mode": "None",
@@ -88,8 +88,7 @@
             "value_src": "default_prop"
           },
           "FREQ_HZ": {
-            "value": "100000000",
-            "value_src": "user_prop"
+            "value": "22727272"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -139,7 +138,7 @@
             "value": "10.000000"
           },
           "PCW_ACT_FPGA0_PERIPHERAL_FREQMHZ": {
-            "value": "100.000000"
+            "value": "22.727272"
           },
           "PCW_ACT_FPGA1_PERIPHERAL_FREQMHZ": {
             "value": "10.000000"
@@ -196,7 +195,7 @@
             "value": "666.666667"
           },
           "PCW_CLK0_FREQ": {
-            "value": "100000000"
+            "value": "22727272"
           },
           "PCW_CLK1_FREQ": {
             "value": "10000000"
@@ -265,7 +264,7 @@
             "value": "1"
           },
           "PCW_FPGA0_PERIPHERAL_FREQMHZ": {
-            "value": "100.000000"
+            "value": "22.720000"
           },
           "PCW_FPGA1_PERIPHERAL_FREQMHZ": {
             "value": "150.000000"
@@ -929,16 +928,16 @@
       }
     },
     "interface_nets": {
-      "processing_system7_0_FIXED_IO": {
-        "interface_ports": [
-          "FIXED_IO",
-          "processing_system7_0/FIXED_IO"
-        ]
-      },
       "processing_system7_0_DDR": {
         "interface_ports": [
           "DDR",
           "processing_system7_0/DDR"
+        ]
+      },
+      "processing_system7_0_FIXED_IO": {
+        "interface_ports": [
+          "FIXED_IO",
+          "processing_system7_0/FIXED_IO"
         ]
       }
     },

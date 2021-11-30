@@ -30,6 +30,15 @@ entity projet_implementation_top_vhdl is
         FIXED_IO_ps_clk : inout STD_LOGIC;
         FIXED_IO_ps_porb : inout STD_LOGIC;
         FIXED_IO_ps_srstb : inout STD_LOGIC;
+        i2s_in_mclk : out std_logic;
+        i2s_in_bclk : out std_logic;
+        i2s_in_lrck : out std_logic;
+        i2s_in_data : in  std_logic;
+
+        i2s_out_mclk : out std_logic;
+        i2s_out_bclk : out std_logic;
+        i2s_out_lrck : out std_logic;
+        i2s_out_data : out  std_logic;
         led : out std_logic_vector(3 downto 0)
       );
 end entity;
@@ -38,6 +47,12 @@ architecture top_arch of projet_implementation_top_vhdl is
   signal aclk_0 : std_logic;
   signal aresetn_0 : std_logic_vector(0 downto 0);
   signal count : unsigned(26 downto 0);
+
+  signal i2s_in_tdata : std_logic_vector(31 downto 0);
+  signal i2s_in_tvalid : std_logic;
+  signal i2s_in_tready : std_logic;
+  signal i2s_in_tlast : std_logic;
+
 begin
 ------ l'instanciation suivante doit être actualisée en fonction du fichier build/vivado/build/hdl/design_1_wrapper.vhd (qui représente le block design)
 bd_inst: entity work.design_1_wrapper
@@ -75,5 +90,30 @@ simple_led_test:process(aclk_0, aresetn_0) begin
     count <= count + 1;
   end if;
 end process;
+
+--- user modules instantiations
+ i2s_in_inst : entity work.i2s_reader
+   port map( clk => aclk_0
+           , aresetn => aresetn_0(0)
+           , din => i2s_in_data
+           , mclk => i2s_in_mclk
+           , bclk => i2s_in_bclk
+           , lrck => i2s_in_lrck
+           , m_axis_tdata => i2s_in_tdata
+           , m_axis_tvalid => i2s_in_tvalid
+           , m_axis_tready => i2s_in_tready
+           , m_axis_tlast  => i2s_in_tlast);
+
+i2s_out_inst : entity work.i2s_writer
+   port map( clk => aclk_0
+           , reset => aresetn_0(0)
+           , dout => i2s_out_data
+           , mclk_in => i2s_out_mclk
+           , sclk_in => i2s_out_bclk
+           , lrck_in => i2s_out_lrck
+           , s_axis_tdata => i2s_in_tdata
+           , s_axis_tvalid => i2s_in_tvalid
+           , s_axis_tready => i2s_in_tready
+           , s_axis_tlast  => i2s_in_tlast);
 
 end architecture;
