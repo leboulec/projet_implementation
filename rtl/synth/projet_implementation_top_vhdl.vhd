@@ -104,7 +104,7 @@ end process;
            , m_axis_tready => i2s_in_tready
            , m_axis_tlast  => i2s_in_tlast);
 
-i2s_out_inst : entity work.i2s_writer
+ i2s_out_inst : entity work.i2s_writer
    port map( clk => aclk_0
            , reset => aresetn_0(0)
            , dout => i2s_out_data

@@ -48,8 +48,6 @@ begin
 
         elsif rising_edge(CLK) then
 
-        if (m_axis_tready = '1' ) then 
-
             cmpt <= cmpt + 1;
             if (cmpt < Divisor_clk_lrck*2 + 2) then
                if ( cmpt mod Divisor_clk_bclk = 0 ) then --generate SCLK
@@ -74,9 +72,6 @@ begin
             else 
                 cmpt <= 1;
             end if;
-
-        end if;    
-
 
         end if;
 

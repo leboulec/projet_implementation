@@ -48,12 +48,10 @@ begin
                 tmp_mclk <= '0';
                 tmp_bclk <= '1';
                 tmp_lrck <= '0';
-                state <= (others =>'0');
-                s_axis_tready <= '1';
+                state <= "01";
+                s_axis_tready <= '0';
 
             elsif rising_edge(CLK) then
-
-                if (s_axis_tvalid = '1') then 
 
                     cmpt <= cmpt + 1;
                     if (cmpt < Divisor_clk_lrck*2 + 2) then
@@ -61,12 +59,12 @@ begin
                        if ( cmpt mod Divisor_clk_bclk = 0 ) then --generate SCLK
                             tmp_bclk <= not(tmp_bclk);
                             state <= '0' & not(tmp_bclk); -- to detect falling edge
-                            nombre <= nombre - 1;
                        end if;
                        
                        if ( state = "00" ) then 
                             state <= "01";
-                            tmp_dout <= s_axis_tdata(nombre); -- 31
+                            tmp_dout <= s_axis_tdata(nombre - 1); -- 31
+                            nombre <= nombre - 1;
                        end if;
 
                        if ( cmpt mod Divisor_clk_lrck = 0 ) then --generate LCLK
@@ -80,8 +78,6 @@ begin
                     else 
                         cmpt <= 1;
                     end if;
-                end if;
-               
             end if;
     end process;
 
