@@ -9,6 +9,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity projet_implementation_top_vhdl is
+  -- entrées/sorties du FPGA
   port( DDR_addr : inout STD_LOGIC_VECTOR ( 14 downto 0 );
         DDR_ba : inout STD_LOGIC_VECTOR ( 2 downto 0 );
         DDR_cas_n : inout STD_LOGIC;
@@ -29,8 +30,11 @@ entity projet_implementation_top_vhdl is
         FIXED_IO_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
         FIXED_IO_ps_clk : inout STD_LOGIC;
         FIXED_IO_ps_porb : inout STD_LOGIC;
-        FIXED_IO_ps_srstb : inout STD_LOGIC
-        -- user added ports
+        FIXED_IO_ps_srstb : inout STD_LOGIC;
+        -- user added ports VGA
+        hsync_out_vga   : out std_logic;
+        vsync_out_vga : out std_logic;
+        r, g, b : out std_logic_vector(3 downto 0)
         -- i2s_in_mclk   : out std_logic;
         -- i2s_in_bclk   : out std_logic;
         -- i2s_in_lrck   : out std_logic;
@@ -43,8 +47,19 @@ architecture top_arch of projet_implementation_top_vhdl is
   -- signal i2s_in_tvalid : std_logic;
   -- signal i2s_in_tready : std_logic;
   -- signal i2s_in_tlast : std_logic;
+  --signal M_AXIS_0_tdata : STD_LOGIC_VECTOR ( 31 downto 0 );
+  --signal M_AXIS_0_tkeep : STD_LOGIC_VECTOR ( 3 downto 0 );
+  --signal M_AXIS_0_tlast : STD_LOGIC;
+  --signal M_AXIS_0_tready : STD_LOGIC;
+  --signal M_AXIS_0_tvalid : STD_LOGIC;
+  signal clk0 : STD_LOGIC;
+  signal rst0 : STD_LOGIC;
+  signal din : STD_LOGIC;
+  signal display : STD_LOGIC;
 begin
+din <= '0';
 bd_inst: entity work.design_1_wrapper
+  -- entrées/sorties du block design
   port map( DDR_addr(14 downto 0) => DDR_addr(14 downto 0),
             DDR_ba(2 downto 0) => DDR_ba(2 downto 0),
             DDR_cas_n => DDR_cas_n,
@@ -65,13 +80,15 @@ bd_inst: entity work.design_1_wrapper
             FIXED_IO_mio(53 downto 0) => FIXED_IO_mio(53 downto 0),
             FIXED_IO_ps_clk => FIXED_IO_ps_clk,
             FIXED_IO_ps_porb => FIXED_IO_ps_porb,
-            FIXED_IO_ps_srstb => FIXED_IO_ps_srstb
+            FIXED_IO_ps_srstb => FIXED_IO_ps_srstb,
+            FCLK_CLK1_0 => clk0,
+            peripheral_aresetn_0(0) => rst0
             -- user added ports
             -- i2s_in_tdata  => i2s_in_tdata
             -- i2s_in_tvalid => i2s_in_tvalid
             -- i2s_in_tready => i2s_in_tready
             -- i2s_in_tlast  => i2s_in_tlast
-          );
+          );			
 
 --- user modules instantiations
 -- i2s_in_inst : entity work.i2s_input
@@ -85,5 +102,20 @@ bd_inst: entity work.design_1_wrapper
 --           , m_axis_tvalid => i2s_in_tvalid
 --           , m_axis_tready => i2s_in_tready
 --           , m_axis_tlast  => i2s_in_tlast);
+
+bd_vga: entity work.vga_writter
+    port map(
+            pixel_clk => clk0,
+            reset => rst0,
+            din => din,
+            hsync => hsync_out_vga,
+            vsync => vsync_out_vga,
+            display => display,
+            r => r,
+            g => g,
+            b => b
+    );
+  
+
 
 end architecture;

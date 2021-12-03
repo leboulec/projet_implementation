@@ -7,14 +7,59 @@ build/vivado:
 build/vivado/script: | build/vivado
 	@mkdir -p $@
 
+# generate VHDL .vhd files package importer script
+build/vivado/script/import_pkg_vhd.tcl: ${SYNTH_PKG_VHD_FILES} | build/vivado/script
+	@echo "### INFO: Generating tcl script ${PWD}/$@ and bash script ${PWD}/build/vivado/script/save_pkg_vhd.sh"
+	@rm -f $@
+	@touch $@
+	@rm -f build/vivado/script/save_pkg_vhd.sh
+	@touch build/vivado/script/save_pkg_vhd.sh
+	@for f in `find rtl/synth -name *.vhd`; do \
+	  cp $${f} build/vivado/build/; \
+		echo "read_vhdl build/vivado/build/`basename $${f}`" >> $@; \
+		echo "cp build/vivado/build/`basename $${f}` $${f}" >> build/vivado/script/save_pkg_vhd.sh; \
+	done
+
+# generate VHDL .vhdl files package importer script
+build/vivado/script/import_pkg_vhdl.tcl: ${SYNTH_PKG_VHDL_FILES} | build/vivado/script
+	@echo "### INFO: Generating tcl script ${PWD}/$@ and bash script ${PWD}/build/vivado/script/save_pkg_vhdl.sh"
+	@rm -f $@
+	@touch $@
+	@rm -f build/vivado/script/save_pkg_vhdl.sh
+	@touch build/vivado/script/save_pkg_vhdl.sh
+	@for f in `find rtl/synth -name *.vhdl`; do \
+		cp $${f} build/vivado/build/; \
+		echo "read_vhdl build/vivado/build/`basename $${f}`" >> $@; \
+		echo "cp build/vivado/build/`basename $${f}` $${f}" >> build/vivado/script/save_pkg_vhdl.sh; \
+	done
+
+# generate System Verilog .sv files package importer script
+build/vivado/script/import_pkg_sv.tcl: ${SYNTH_PKG_SV_FILES} | build/vivado/script
+	@echo "### INFO: Generating tcl script ${PWD}/$@ and bash script ${PWD}/build/vivado/script/save_pkg_sv.sh"
+	@rm -f $@
+	@touch $@
+	@rm -f build/vivado/script/save_pkg_sv.sh
+	@touch build/vivado/script/save_pkg_sv.sh
+	@for f in `find rtl/synth -name *.vhdl`; do \
+		cp $${f} build/vivado/build/; \
+		echo "read_verilog -sv build/vivado/build/`basename $${f}`" >> $@; \
+		echo "cp build/vivado/build/`basename $${f}` $${f}" >> build/vivado/script/save_pkg_sv.sh; \
+	done
+
+build/vivado/script/import_pkg.tcl: build/vivado/script/import_pkg_sv.tcl build/vivado/script/import_pkg_vhdl.tcl build/vivado/script/import_pkg_vhd.tcl
+	@echo "### INFO: Generating tcl script ${PWD}/$@"
+	@echo "source build/vivado/script/import_pkg_sv.tcl"    > $@
+	@echo "source build/vivado/script/import_pkg_vhd.tcl"  >> $@
+	@echo "source build/vivado/script/import_pkg_vhdl.tcl" >> $@
+
 # generate contraints .xdc files importer script
 build/vivado/script/import_xdc.tcl: ${CONSTR_XDC_FILES} | build/vivado/script
-	@echo "### INFO: Generating tcl script ${PWD}/$@ and bash script ${PWD}/build/vivado/script/save_vhd.sh"
+	@echo "### INFO: Generating tcl script ${PWD}/$@ and bash script ${PWD}/build/vivado/script/save_xdc.sh"
 	@rm -f $@
 	@touch $@
 	@rm -f build/vivado/script/save_xdc.sh
 	@touch build/vivado/script/save_xdc.sh
-	@for f in `find rtl/synth -name *.xdc`; do \
+	@for f in `find rtl/constr -name *.xdc`; do \
 	  cp $${f} build/vivado/build/; \
 		echo "read_xdc build/vivado/build/`basename $${f}`" >> $@; \
 		echo "cp build/vivado/build/`basename $${f}` $${f}" >> build/vivado/script/save_xdc.sh; \
@@ -22,7 +67,7 @@ build/vivado/script/import_xdc.tcl: ${CONSTR_XDC_FILES} | build/vivado/script
 
 # generate VHDL .vhd files importer script
 build/vivado/script/import_vhd.tcl: ${SYNTH_VHD_FILES} | build/vivado/script
-	@echo "### INFO: Generating tcl script ${PWD}/$@ and bash script ${PWD}/build/vivado/script/save_vhdl.sh"
+	@echo "### INFO: Generating tcl script ${PWD}/$@ and bash script ${PWD}/build/vivado/script/save_vhd.sh"
 	@rm -f $@
 	@touch $@
 	@rm -f build/vivado/script/save_vhd.sh
@@ -35,7 +80,7 @@ build/vivado/script/import_vhd.tcl: ${SYNTH_VHD_FILES} | build/vivado/script
 
 # generate VHDL .vhdl files importer script
 build/vivado/script/import_vhdl.tcl: ${SYNTH_VHDL_FILES} | build/vivado/script
-	@echo "### INFO: Generating tcl script ${PWD}/$@"
+	@echo "### INFO: Generating tcl script ${PWD}/$@ and bash script ${PWD}/build/vivado/script/save_vhd.sh"
 	@rm -f $@
 	@touch $@
 	@rm -f build/vivado/script/save_vhdl.sh
@@ -86,7 +131,7 @@ build/vivado/script/import_ips.tcl: ${SYNTH_XCI_FILES} | build/vivado/script
 		echo "set_property part ${PART} [current_project]" >> $@; \
 		echo "set_property board_part ${BOARD} [current_project]" >> $@; \
 		echo "set_property target_language ${RTL_LANGUAGE} [current_project]" >> $@; \
-		echo "upgrade_ip -force [get_files build/vi	vado/`basename $${f}`]" >> $@; \
+		echo "upgrade_ip -force [get_files build/vivado/`basename $${f}`]" >> $@; \
 		echo "generate_target all [get_files build/vivado/`basename $${f}`] -force" >> $@; \
 		echo "export_ip_user_files -of_objects [get_files build/vivado/build/`basename $${f}`] -no_script -force" >> $@; \
 		echo "export_simulation -directory \"build/vivado/sim\" -of_objects [get_files build/vivado/build/`basename $${f}`] -simulator xsim -force" >> $@; \
@@ -120,8 +165,9 @@ build/vivado/script/import_bds.tcl: ${SYNTH_BD_FILES} | build/vivado/script
 	done
 
 # generate synthetisable files importer script
-build/vivado/script/import_synth.tcl: build/vivado/script/import_xdc.tcl build/vivado/script/import_vhd.tcl build/vivado/script/import_vhdl.tcl build/vivado/script/import_verilog.tcl build/vivado/script/import_system_verilog.tcl build/vivado/script/import_bds.tcl build/vivado/script/import_ips.tcl build/vivado/script/import_xdc.tcl
+build/vivado/script/import_synth.tcl: build/vivado/script/import_xdc.tcl build/vivado/script/import_vhd.tcl build/vivado/script/import_vhdl.tcl build/vivado/script/import_verilog.tcl build/vivado/script/import_system_verilog.tcl build/vivado/script/import_bds.tcl build/vivado/script/import_ips.tcl build/vivado/script/import_xdc.tcl build/vivado/script/import_pkg.tcl
 	@echo "### INFO: Generating tcl script ${PWD}/$@"
+	@echo "source build/vivado/script/import_pkg.tcl"             > $@
 	@echo "source build/vivado/script/import_vhd.tcl"            >> $@
 	@echo "source build/vivado/script/import_vhdl.tcl"           >> $@
 	@echo "source build/vivado/script/import_verilog.tcl"        >> $@
@@ -132,13 +178,13 @@ build/vivado/script/import_synth.tcl: build/vivado/script/import_xdc.tcl build/v
 
 build/vivado/script/save_synth_files.sh: build/vivado/script/import_synth.tcl
 	@echo "### INFO: Generating bash script ${PWD}/$@"
-	@echo "bash build/vivado/script/save_xdc.sh" > $@
-	@echo "bash build/vivado/script/save_vhd.sh" >> $@
-	@echo "bash build/vivado/script/save_vhdl.sh" >> $@
-	@echo "bash build/vivado/script/save_verilog.sh" >> $@
+	@echo "bash build/vivado/script/save_xdc.sh"             > $@
+	@echo "bash build/vivado/script/save_vhd.sh"            >> $@
+	@echo "bash build/vivado/script/save_vhdl.sh"           >> $@
+	@echo "bash build/vivado/script/save_verilog.sh"        >> $@
 	@echo "bash build/vivado/script/save_system_verilog.sh" >> $@
-	@echo "bash build/vivado/script/save_ips.sh" >> $@
-	@echo "bash build/vivado/script/save_bds.sh" >> $@
+	@echo "bash build/vivado/script/save_ips.sh"            >> $@
+	@echo "bash build/vivado/script/save_bds.sh"            >> $@
 
 build/vivado/script/synth.tcl: build/vivado/script/import_synth.tcl
 	@echo "### INFO: Generating tcl script ${PWD}/$@"
@@ -178,6 +224,7 @@ build/vivado/import-synth.done: build/vivado/script/import_synth.tcl
 
 build/vivado/build/synth.dcp: build/vivado/script/synth.tcl
 	@rm -rf build/vivado/sim
+	@rm -rf build/xsct
 	@echo "### INFO: Launching synthesis with top level module: ${TOP}"
 	@mkdir -p build/vivado/synth_out
 	@vivado -mode batch -source build/vivado/script/synth.tcl -nojournal -log build/vivado/synth_out/synth.log
