@@ -96,28 +96,28 @@ ${XSCT_FOLDER}/build-bm-${BM_PROJECT}.tcl: ${XSCT_FOLDER}/create-bm-${BM_PROJECT
 
 ${XSCT_FOLDER}/run-bm-${BM_PROJECT}.tcl: | ${XSCT_WS}
 	@echo "### INFO: Generating tcl script ${PWD}/$@"
-	@echo "connect"                                                                         > $@
-	@echo "puts [targets]"                                                                 >> $@
-	@echo "targets -set -nocase -filter {name =~ \"ARM* #0\"}"                             >> $@
-	@echo "rst -system"                                                                    >> $@
-	@echo "fpga -f build/vivado/bitstream.bit"                                             >> $@
-	@echo "namespace eval xsdb {source ${XSCT_WS}/${XSCT_HW_NAME}/ps7_init.tcl; ps7_init}" >> $@
-	@echo "dow ${XSCT_WS}/${BM_PROJECT}/Debug/${BM_PROJECT}.elf"                           >> $@
-	@echo "bpadd -addr &main"                                                              >> $@
-	@echo "con -block"                                                                     >> $@
-	@echo "con"                                                                            >> $@
+	@echo "connect"                                                                                    > $@
+	@echo "puts [targets]"                                                                            >> $@
+	@echo "targets -set -nocase -filter {name =~ \"ARM* #0\"}"                                        >> $@
+	@echo "rst -system"                                                                               >> $@
+	@echo "fpga -f build/vivado/bitstream.bit"                                                        >> $@
+	@echo "source ${XSCT_WS}/${XSCT_HW_NAME}/ps7_init.tcl; ps7_init; ps7_post_config; rst -processor" >> $@
+	@echo "dow ${XSCT_WS}/${BM_PROJECT}/Debug/${BM_PROJECT}.elf"                                      >> $@
+	@echo "bpadd -addr &main"                                                                         >> $@
+	@echo "con -block"                                                                                >> $@
+	@echo "con"                                                                                       >> $@
 
 ${XSCT_FOLDER}/debug-bm-${BM_PROJECT}.tcl: | ${XSCT_WS}
 	@echo "### INFO: Generating tcl script ${PWD}/$@"
-	@echo "connect"                                                                         > $@
-	@echo "puts [targets]"                                                                 >> $@
-	@echo "targets -set -nocase -filter {name =~ \"ARM* #0\"}"                             >> $@
-	@echo "rst -system"                                                                    >> $@
-	@echo "fpga -f build/vivado/bitstream.bit"                                             >> $@
-	@echo "source ${XSCT_WS}/${XSCT_HW_NAME}/ps7_init.tcl"                                 >> $@
-	@echo "ps7_init"                                                                       >> $@
-	@echo "dow ${XSCT_WS}/${BM_PROJECT}/Debug/${BM_PROJECT}.elf"                           >> $@
-	@echo "bpadd -addr &main"                                                              >> $@
+	@echo "connect"                                                                          > $@
+	@echo "puts [targets]"                                                                  >> $@
+	@echo "targets -set -nocase -filter {name =~ \"ARM* #0\"}"                              >> $@
+	@echo "rst -system"                                                                     >> $@
+	@echo "fpga -f build/vivado/bitstream.bit"                                              >> $@
+	@echo "source ${XSCT_WS}/${XSCT_HW_NAME}/ps7_init.tcl; ps7_post_config; rst -processor" >> $@
+	@echo "ps7_init"                                                                        >> $@
+	@echo "dow ${XSCT_WS}/${BM_PROJECT}/Debug/${BM_PROJECT}.elf"                            >> $@
+	@echo "bpadd -addr &main"                                                               >> $@
 
 ${XSCT_FOLDER}/clean-bm-project.tcl: | ${XSCT_WS}
 	@echo "### INFO: Generating tcl script ${PWD}/$@"
@@ -153,7 +153,7 @@ ${XSCT_FOLDER}/bm-verify-${BM_PROJECT}.done: | ${XSCT_WS}
 		echo "### EXEMPLE: BUILD: make xsct-baremetal-build BM_PROJECT=helloworld"; \
 		echo "### EXEMPLE: RUN: make xsct-baremetal-run BM_PROJECT=helloworld"; \
 		echo "### EXEMPLE: DEBUG: make xsct-baremetal-debug BM_PROJECT=helloworld"; \
-		echo "### INFO: All project must be placed in \"baremetal\" directory"; \
+		echo "### INFO: Any baremetal project must be placed in \"baremetal\" directory"; \
 		exit -1; \
 	fi
 
@@ -183,15 +183,16 @@ xsct-clean: xsct-clean-workspace
 	@echo "### INFO: Cleaning xsct folder"
 	@rm -rf build/xsct
 
-xsct-xsdk: ${XSCT_WS}/${XSCT_HW_NAME}/system.hdf
+xsct-xsdk: ${XSCT_WS}/${XSCT_HW_NAME}/system.hdf ${XSCT_WS}/${XSCT_BSP_NAME}/system.mss
 	@xsdk -workspace ${XSCT_WS}
 	@echo "Would you like to save the modified files? [y, N]"
 	@read rc; \
 	if [[ "$${rc}" == @(y|Y) ]]; then \
 		echo "### INFO: Copying source files from ${PWD}/${XSCT_WS}/ to ${PWD}/baremetal"; \
-		for d in `ls -d ${XSCT_WS} | grep -v hw | grep -v bsp`; do \
-			mkdir -p baremetal/$${d}; \
-			cp -r ${XSCT_WS}/$${d}/src baremetal/$${d}/; \
+		for d in `ls -d ${XSCT_WS}/*/ | grep -v hw | grep -v bsp | grep -v TempFiles`; do \
+      proj_dir=$$(basename $${d}); \
+			mkdir -p baremetal/$${proj_dir}; \
+			cp -r ${XSCT_WS}/$${proj_dir}/src baremetal/$${proj_dir}/; \
 		done \
 	else \
 		echo "### INFO: Modified files from ${PWD}/${XSCT_WS}/ not saved"; \

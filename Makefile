@@ -4,11 +4,12 @@
 SHELL := /bin/bash
 
 # VIVADO USER CONFIG
-TOP        ?= projet_implementation_top_vhdl
-PART       ?= xc7z020clg484-1
-BOARD      ?= em.avnet.com:zed:part0:1.3
+TOP          ?= projet_implementation_top_vhdl
+PART         ?= xc7z020clg484-1
+BOARD        ?= em.avnet.com:zed:part0:1.3
 RTL_LANGUAGE ?= VHDL
 #RTL_LANGUAGE ?= Verilog
+USE_PROBES   ?= NO
 
 # SIMULATION USER CONFIG
 SIM_MODE   ?= gui

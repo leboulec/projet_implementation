@@ -28,6 +28,7 @@ module projet_implementation_top_sv
 , inout        FIXED_IO_ps_clk
 , inout        FIXED_IO_ps_porb
 , inout        FIXED_IO_ps_srstb
+, output [3:0] led
 // user added ports
 //, output i2s_in_mclk
 //, output i2s_in_bclk
@@ -40,6 +41,10 @@ module projet_implementation_top_sv
 // logic        i2s_in_tvalid;
 // logic        i2s_in_tready:
 // logic        i2s_in_tlast;
+
+logic aclk_0;
+logic [0:0]aresetn_0;
+logic [26:0]count;
 
 design_1_wrapper bd_inst( .DDR_addr          (DDR_addr)
                         , .DDR_ba            (DDR_ba)
@@ -63,12 +68,18 @@ design_1_wrapper bd_inst( .DDR_addr          (DDR_addr)
                         , .FIXED_IO_ps_porb  (FIXED_IO_ps_porb)
                         , .FIXED_IO_ps_srstb (FIXED_IO_ps_srstb)
                         // user added ports
+                        , .aclk_0    (aclk_0)
+                        , .aresetn_0 (aresetn_0)
                         //, .i2s_in_mclk (i2s_in_mclk)
                         //, .i2s_in_bclk (i2s_in_bclk)
                         //, .i2s_in_lrck (i2s_in_lrck)
                         //, .i2s_in_data (i2s_in_data)
                         );
-
+assign led = count[26:23];
+always@(posedge aclk_0 or negedge aresetn_0[0]) begin
+  if(!aresetn_0[0]) count <= '0;
+  else count <= count + 1;
+end
 // i2s_input i2s_input( .clk (?)
 //                    , .aresetn(?)
 //                    , .din(i2s_in_data)
