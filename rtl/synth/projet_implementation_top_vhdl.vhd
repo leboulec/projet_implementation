@@ -29,17 +29,21 @@ entity projet_implementation_top_vhdl is
         FIXED_IO_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
         FIXED_IO_ps_clk : inout STD_LOGIC;
         FIXED_IO_ps_porb : inout STD_LOGIC;
-        FIXED_IO_ps_srstb : inout STD_LOGIC;
-        led : out std_logic_vector(3 downto 0)
+        FIXED_IO_ps_srstb : inout STD_LOGIC
+        -- user added ports
+        -- i2s_in_mclk   : out std_logic;
+        -- i2s_in_bclk   : out std_logic;
+        -- i2s_in_lrck   : out std_logic;
+        -- i2s_in_data   : in  std_logic
       );
 end entity;
 
 architecture top_arch of projet_implementation_top_vhdl is
-  signal aclk_0 : std_logic;
-  signal aresetn_0 : std_logic_vector(0 downto 0);
-  signal count : unsigned(26 downto 0);
+  -- signal i2s_in_tdata : std_logic_vector(31 downto 0);
+  -- signal i2s_in_tvalid : std_logic;
+  -- signal i2s_in_tready : std_logic;
+  -- signal i2s_in_tlast : std_logic;
 begin
------- l'instanciation suivante doit être actualisée en fonction du fichier build/vivado/build/hdl/design_1_wrapper.vhd (qui représente le block design)
 bd_inst: entity work.design_1_wrapper
   port map( DDR_addr(14 downto 0) => DDR_addr(14 downto 0),
             DDR_ba(2 downto 0) => DDR_ba(2 downto 0),
@@ -61,19 +65,26 @@ bd_inst: entity work.design_1_wrapper
             FIXED_IO_mio(53 downto 0) => FIXED_IO_mio(53 downto 0),
             FIXED_IO_ps_clk => FIXED_IO_ps_clk,
             FIXED_IO_ps_porb => FIXED_IO_ps_porb,
-            FIXED_IO_ps_srstb => FIXED_IO_ps_srstb,
-            aclk_0 => aclk_0,
-            aresetn_0 => aresetn_0
+            FIXED_IO_ps_srstb => FIXED_IO_ps_srstb
+            -- user added ports
+            -- i2s_in_tdata  => i2s_in_tdata
+            -- i2s_in_tvalid => i2s_in_tvalid
+            -- i2s_in_tready => i2s_in_tready
+            -- i2s_in_tlast  => i2s_in_tlast
           );
 
--- votre module: ici un compteur parn exemple qui sort sur 4 leds
-led <= std_logic_vector(count(26 downto 23));
-simple_led_test:process(aclk_0, aresetn_0) begin
-  if(aresetn_0 = "0") then
-    count <= (others=>'0');
-  elsif(rising_edge(aclk_0)) then
-    count <= count + 1;
-  end if;
-end process;
+--- user modules instantiations
+-- i2s_in_inst : entity work.i2s_input
+--   port map( clk => ?
+--           , aresetn => ?
+--           , din => i2s_in_data
+--           , mclk => i2s_in_mclk
+--           , bclk => i2s_in_bclk
+--           , lrck => i2s_in_lrck
+--           , m_axis_tdata => i2s_in_tdata
+--           , m_axis_tvalid => i2s_in_tvalid
+--           , m_axis_tready => i2s_in_tready
+--           , m_axis_tlast  => i2s_in_tlast);
 
 end architecture;
+
