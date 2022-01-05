@@ -123,7 +123,6 @@ build/xsim/script/import_ips.tcl: ${SYNTH_XCI_FILES} | build/xsim/script
 		echo "set_property part ${PART} [current_project]" >> $@; \
 		echo "set_property board_part ${BOARD} [current_project]" >> $@; \
 		echo "set_property target_language Verilog [current_project]" >> $@; \
-		echo "upgrade_ip -force [get_files build/xsim/`basename $${f}`]" >> $@; \
 		echo "generate_target all [get_files build/xsim/`basename $${f}`] -force" >> $@; \
 		echo "export_ip_user_files -of_objects [get_files build/xsim/build/`basename $${f}`] -no_script -force" >> $@; \
 		echo "export_simulation -directory \"build/xsim/sim\" -of_objects [get_files build/xsim/build/`basename $${f}`] -simulator xsim -force" >> $@; \
@@ -151,7 +150,7 @@ build/xsim/script/import_bds.tcl: ${SYNTH_BD_FILES} | build/xsim/script
 
 build/xsim/script/import_synth.tcl: build/xsim/script/import_xdc.tcl build/xsim/script/import_vhd.tcl build/xsim/script/import_vhdl.tcl build/xsim/script/import_verilog.tcl build/xsim/script/import_system_verilog.tcl build/xsim/script/import_bds.tcl build/xsim/script/import_ips.tcl build/xsim/script/import_xdc.tcl build/xsim/script/import_pkg.tcl
 	@echo "### INFO: Generating tcl script ${PWD}/$@"
-	@echo "source build/xsim/script/import_pkg.tcl"            > $@
+	@echo "source build/xsim/script/import_pkg.tcl"             > $@
 	@echo "source build/xsim/script/import_vhd.tcl"            >> $@
 	@echo "source build/xsim/script/import_vhdl.tcl"           >> $@
 	@echo "source build/xsim/script/import_verilog.tcl"        >> $@
