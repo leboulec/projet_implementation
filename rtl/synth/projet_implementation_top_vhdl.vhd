@@ -39,6 +39,7 @@ entity projet_implementation_top_vhdl is
         i2s_out_bclk : out std_logic;
         i2s_out_lrck : out std_logic;
         i2s_out_data : out  std_logic;
+
         led : out std_logic_vector(3 downto 0)
       );
 end entity;
@@ -48,10 +49,10 @@ architecture top_arch of projet_implementation_top_vhdl is
   signal aresetn_0 : std_logic_vector(0 downto 0);
   signal count : unsigned(26 downto 0);
 
-  signal i2s_in_tdata : std_logic_vector(31 downto 0);
-  signal i2s_in_tvalid : std_logic;
-  signal i2s_in_tready : std_logic;
-  signal i2s_in_tlast : std_logic;
+  signal i2s_in_tdata, i2s_out_tdata : std_logic_vector(31 downto 0);
+  signal i2s_in_tvalid, i2s_out_tvalid : std_logic;
+  signal i2s_in_tready, i2s_out_tready : std_logic;
+  signal i2s_in_tlast, i2s_out_tlast : std_logic;
 
 begin
 ------ l'instanciation suivante doit être actualisée en fonction du fichier build/vivado/build/hdl/design_1_wrapper.vhd (qui représente le block design)
@@ -77,6 +78,19 @@ bd_inst: entity work.design_1_wrapper
             FIXED_IO_ps_clk => FIXED_IO_ps_clk,
             FIXED_IO_ps_porb => FIXED_IO_ps_porb,
             FIXED_IO_ps_srstb => FIXED_IO_ps_srstb,
+
+            S_AXIS_S2MM_0_tdata => i2s_in_tdata,
+            S_AXIS_S2MM_0_tvalid => i2s_in_tvalid,
+            S_AXIS_S2MM_0_tready  => i2s_in_tready,
+            S_AXIS_S2MM_0_tlast  => i2s_in_tlast,
+
+            M_AXIS_MM2S_0_tdata  => i2s_out_tdata, 
+            M_AXIS_MM2S_0_tvalid  => i2s_out_tvalid,
+            M_AXIS_MM2S_0_tready  => i2s_out_tready,
+            M_AXIS_MM2S_0_tlast  => i2s_out_tlast,
+
+            S_AXIS_S2MM_0_tkeep => (others =>'1'),
+
             aclk_0 => aclk_0,
             aresetn_0 => aresetn_0
           );
@@ -91,7 +105,7 @@ simple_led_test:process(aclk_0, aresetn_0) begin
   end if;
 end process;
 
---- user modules instantiations
+-- user modules instantiations
  i2s_in_inst : entity work.i2s_reader
    port map( clk => aclk_0
            , aresetn => aresetn_0(0)
@@ -105,15 +119,15 @@ end process;
            , m_axis_tlast  => i2s_in_tlast);
 
  i2s_out_inst : entity work.i2s_writer
-   port map( clk => aclk_0
+  port map( clk => aclk_0
            , reset => aresetn_0(0)
            , dout => i2s_out_data
            , mclk_in => i2s_out_mclk
            , sclk_in => i2s_out_bclk
            , lrck_in => i2s_out_lrck
-           , s_axis_tdata => i2s_in_tdata
-           , s_axis_tvalid => i2s_in_tvalid
-           , s_axis_tready => i2s_in_tready
-           , s_axis_tlast  => i2s_in_tlast);
+           , s_axis_tdata => i2s_out_tdata
+           , s_axis_tvalid => i2s_out_tvalid
+           , s_axis_tready => i2s_out_tready
+          , s_axis_tlast  => i2s_out_tlast);
 
 end architecture;

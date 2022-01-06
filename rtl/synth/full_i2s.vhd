@@ -26,9 +26,9 @@ signal i2s_in_tlast : std_logic;
 	
 begin
 --- user modules instantiations
-i2s_in_inst : entity work.i2s_reader
+ i2s_in_inst : entity work.i2s_reader
    port map( clk => CLK
-           , aresetn => RST
+          , aresetn => RST
            , din => i2s_in_data
            , mclk => i2s_in_mclk
            , bclk => i2s_in_bclk

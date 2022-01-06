@@ -1,6 +1,6 @@
 # Copyright 2021 Raphaël Bresson
 
-SYNTH_V_FILES    = $(shell find ${PWD}/rtl/synth/ -name "*.v"   )
+SYNTH_V_FILES    = $(shell find ${PWD}/rtl/synth/ -name "*.v")
 SYNTH_SV_FILES   = $(shell find ${PWD}/rtl/synth/ -name "*.sv"   | grep -v pkg)
 SYNTH_VHD_FILES  = $(shell find ${PWD}/rtl/synth/ -name "*.vhd"  | grep -v pkg)
 SYNTH_VHDL_FILES = $(shell find ${PWD}/rtl/synth/ -name "*.vhdl" | grep -v pkg)
@@ -10,7 +10,15 @@ SYNTH_PKG_VHDL_FILES = $(shell find ${PWD}/rtl/synth/ -name "*.vhdl" | grep pkg)
 SYNTH_XCI_FILES  = $(shell find ${PWD}/rtl/synth/ -name "*.xci" )
 SYNTH_BD_FILES   = $(shell find ${PWD}/rtl/synth/ -name "*.bd"  )
 
-CONSTR_XDC_FILES = $(shell find ${PWD}/rtl/constr/ -name "*.xdc")
+CONSTR_XDC_FILES          = $(shell find ${PWD}/rtl/constr/ -name "*.xdc")
+CONSTR_XDC_PROBES         = $(shell find ${PWD}/rtl/probes/ -name "*.xdc")
+CONSTR_XDC_PRE_OPT        = $(shell find ${PWD}/rtl/pre_opt/ -name "*.xdc")
+CONSTR_XDC_POST_OPT       = $(shell find ${PWD}/rtl/post_opt/ -name "*.xdc")
+CONSTR_XDC_POST_PLACEMENT = $(shell find ${PWD}/rtl/post_placement/ -name "*.xdc")
+
+# TODO: Netlists input not supported
+#NETLIST_V      = $(shell find ${PWD}/rtl/pre_opt/ -name "*.v")
+#NETLIST_EDIF   = $(shell find ${PWD}/rtl/pre_opt/ -name "*.edif")
 
 SIM_V_FILES    = $(shell find ${PWD}/rtl/sim/ -name "*.v"   )
 SIM_SV_FILES   = $(shell find ${PWD}/rtl/sim/ -name "*.sv"  )
