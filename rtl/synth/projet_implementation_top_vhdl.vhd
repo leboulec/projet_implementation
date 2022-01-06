@@ -55,6 +55,7 @@ architecture top_arch of projet_implementation_top_vhdl is
   signal i2s_in_tlast, i2s_out_tlast : std_logic;
 
 begin
+------ l'instanciation suivante doit être actualisée en fonction du fichier build/vivado/build/hdl/design_1_wrapper.vhd (qui représente le block design)
 bd_inst: entity work.design_1_wrapper
   port map( DDR_addr(14 downto 0) => DDR_addr(14 downto 0),
             DDR_ba(2 downto 0) => DDR_ba(2 downto 0),
@@ -94,18 +95,15 @@ bd_inst: entity work.design_1_wrapper
             aresetn_0 => aresetn_0
           );
 
---- user modules instantiations
--- i2s_in_inst : entity work.i2s_input
---   port map( clk => ?
---           , aresetn => ?
---           , din => i2s_in_data
---           , mclk => i2s_in_mclk
---           , bclk => i2s_in_bclk
---           , lrck => i2s_in_lrck
---           , m_axis_tdata => i2s_in_tdata
---           , m_axis_tvalid => i2s_in_tvalid
---           , m_axis_tready => i2s_in_tready
---           , m_axis_tlast  => i2s_in_tlast);
+-- votre module: ici un compteur parn exemple qui sort sur 4 leds
+led <= std_logic_vector(count(26 downto 23));
+simple_led_test:process(aclk_0, aresetn_0) begin
+  if(aresetn_0 = "0") then
+    count <= (others=>'0');
+  elsif(rising_edge(aclk_0)) then
+    count <= count + 1;
+  end if;
+end process;
 
 -- user modules instantiations
  i2s_in_inst : entity work.i2s_reader
@@ -133,4 +131,3 @@ bd_inst: entity work.design_1_wrapper
           , s_axis_tlast  => i2s_out_tlast);
 
 end architecture;
-

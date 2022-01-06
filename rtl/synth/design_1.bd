@@ -216,7 +216,7 @@
       }
     },
     "ports": {
-    "aresetn_0": {
+      "aresetn_0": {
         "type": "rst",
         "direction": "O",
         "left": "0",
@@ -240,7 +240,7 @@
             "value": "S_AXIS_S2MM_0:M_AXIS_MM2S_0"
           },
           "CLK_DOMAIN": {
-            "value": "design_1_processing_system7_0_0_FCLK_CLK1",
+            "value": "design_1_processing_system7_0_0_FCLK_CLK0",
             "value_src": "default_prop"
           },
           "FREQ_HZ": {
@@ -904,12 +904,6 @@
             "value": "1"
           },
           "PCW_EN_QSPI": {
-            "value": "1"
-          },
-          "PCW_EN_RST1_PORT": {
-            "value": "1"
-          },
-          "PCW_EN_RST2_PORT": {
             "value": "1"
           },
           "PCW_EN_SDIO0": {
@@ -1595,12 +1589,6 @@
           },
           "PCW_USE_S_AXI_HP1": {
             "value": "0"
-          },
-          "PCW_USE_S_AXI_GP0": {
-            "value": "1"
-          },
-          "PCW_USE_S_AXI_HP0": {
-            "value": "1"
           },
           "preset": {
             "value": "ZedBoard"
@@ -2632,7 +2620,7 @@
           "proc_sys_reset_1/ext_reset_in"
         ]
       },
-      "processing_system7_0_FCLK_CLK1": {
+      "proc_sys_reset_0_peripheral_aresetn": {
         "ports": [
           "proc_sys_reset_0/peripheral_aresetn",
           "aresetn_0",
@@ -2651,193 +2639,6 @@
           "axi_dma_0/axi_resetn",
           "axi_dma_1/axi_resetn"
         ]
-      },
-      "axi_gpio_0_gpio_io_o": {
-        "ports": [
-          "axi_gpio_0/gpio_io_o",
-          "xfft_0/s_axis_config_tdata"
-        ]
-      },
-      "processing_system7_0_FCLK_CLK0": {
-        "ports": [
-          "processing_system7_0/FCLK_CLK0",
-          "axi_smc/aclk",
-          "processing_system7_0/S_AXI_HP0_ACLK",
-          "rst_ps7_0_50M/slowest_sync_clk",
-          "xfft_0/aclk",
-          "axis_data_fifo_0/s_axis_aclk",
-          "axi_gpio_0/s_axi_aclk",
-          "processing_system7_0/M_AXI_GP0_ACLK",
-          "processing_system7_0/S_AXI_GP0_ACLK",
-          "ps7_0_axi_periph/ACLK",
-          "ps7_0_axi_periph/S00_ACLK",
-          "ps7_0_axi_periph/M00_ACLK",
-          "ps7_0_axi_periph/M01_ACLK",
-          "ps7_0_axi_periph/M02_ACLK",
-          "axi_dma_1/s_axi_lite_aclk",
-          "axi_dma_1/m_axi_mm2s_aclk",
-          "axi_dma_0/s_axi_lite_aclk",
-          "axi_dma_0/m_axi_mm2s_aclk",
-          "axi_dma_0/m_axi_s2mm_aclk",
-          "axi_dma_1/m_axi_sg_aclk"
-        ]
-      }
-    },
-    "addressing": {
-      "/processing_system7_0": {
-        "address_spaces": {
-          "Data": {
-            "range": "4G",
-            "width": "32",
-            "segments": {
-              "SEG_axi_dma_0_Reg": {
-                "address_block": "/axi_dma_0/S_AXI_LITE/Reg",
-                "offset": "0x40400000",
-                "range": "64K"
-              },
-              "SEG_axi_dma_1_Reg": {
-                "address_block": "/axi_dma_1/S_AXI_LITE/Reg",
-                "offset": "0x40410000",
-                "range": "64K"
-              },
-              "SEG_axi_gpio_0_Reg": {
-                "address_block": "/axi_gpio_0/S_AXI/Reg",
-                "offset": "0x41200000",
-                "range": "64K"
-              }
-            }
-          }
-        }
-      },
-      "/axi_dma_1": {
-        "address_spaces": {
-          "Data_SG": {
-            "range": "4G",
-            "width": "32",
-            "segments": {
-              "SEG_processing_system7_0_GP0_DDR_LOWOCM": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_DDR_LOWOCM",
-                "offset": "0x00000000",
-                "range": "256M"
-              },
-              "SEG_processing_system7_0_HP0_DDR_LOWOCM": {
-                "address_block": "/processing_system7_0/S_AXI_HP0/HP0_DDR_LOWOCM",
-                "offset": "0x10000000",
-                "range": "256M"
-              },
-              "SEG_processing_system7_0_GP0_IOP": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_IOP",
-                "offset": "0xE0000000",
-                "range": "4M",
-                "is_excluded": "TRUE"
-              },
-              "SEG_processing_system7_0_GP0_M_AXI_GP0": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_M_AXI_GP0",
-                "offset": "0x40000000",
-                "range": "1G",
-                "is_excluded": "TRUE"
-              }
-            }
-          },
-          "Data_MM2S": {
-            "range": "4G",
-            "width": "32",
-            "segments": {
-              "SEG_processing_system7_0_GP0_DDR_LOWOCM": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_DDR_LOWOCM",
-                "offset": "0x00000000",
-                "range": "256M"
-              },
-              "SEG_processing_system7_0_GP0_QSPI_LINEAR": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_QSPI_LINEAR",
-                "offset": "0xFC000000",
-                "range": "16M"
-              },
-              "SEG_processing_system7_0_HP0_DDR_LOWOCM": {
-                "address_block": "/processing_system7_0/S_AXI_HP0/HP0_DDR_LOWOCM",
-                "offset": "0x10000000",
-                "range": "256M"
-              },
-              "SEG_processing_system7_0_GP0_IOP": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_IOP",
-                "offset": "0xE0000000",
-                "range": "4M",
-                "is_excluded": "TRUE"
-              },
-              "SEG_processing_system7_0_GP0_M_AXI_GP0": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_M_AXI_GP0",
-                "offset": "0x40000000",
-                "range": "1G",
-                "is_excluded": "TRUE"
-              }
-            }
-          }
-        }
-      },
-      "/axi_dma_0": {
-        "address_spaces": {
-          "Data_MM2S": {
-            "range": "4G",
-            "width": "32",
-            "segments": {
-              "SEG_processing_system7_0_GP0_DDR_LOWOCM": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_DDR_LOWOCM",
-                "offset": "0x00000000",
-                "range": "256M"
-              },
-              "SEG_processing_system7_0_GP0_QSPI_LINEAR": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_QSPI_LINEAR",
-                "offset": "0xFC000000",
-                "range": "16M"
-              },
-              "SEG_processing_system7_0_HP0_DDR_LOWOCM": {
-                "address_block": "/processing_system7_0/S_AXI_HP0/HP0_DDR_LOWOCM",
-                "offset": "0x10000000",
-                "range": "256M"
-              },
-              "SEG_processing_system7_0_GP0_IOP": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_IOP",
-                "offset": "0xE0000000",
-                "range": "4M",
-                "is_excluded": "TRUE"
-              },
-              "SEG_processing_system7_0_GP0_M_AXI_GP0": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_M_AXI_GP0",
-                "offset": "0x40000000",
-                "range": "1G",
-                "is_excluded": "TRUE"
-              }
-            }
-          },
-          "Data_S2MM": {
-            "range": "4G",
-            "width": "32",
-            "segments": {
-              "SEG_processing_system7_0_GP0_DDR_LOWOCM": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_DDR_LOWOCM",
-                "offset": "0x00000000",
-                "range": "256M"
-              },
-              "SEG_processing_system7_0_HP0_DDR_LOWOCM": {
-                "address_block": "/processing_system7_0/S_AXI_HP0/HP0_DDR_LOWOCM",
-                "offset": "0x10000000",
-                "range": "256M"
-              },
-              "SEG_processing_system7_0_GP0_IOP": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_IOP",
-                "offset": "0xE0000000",
-                "range": "4M",
-                "is_excluded": "TRUE"
-              },
-              "SEG_processing_system7_0_GP0_M_AXI_GP0": {
-                "address_block": "/processing_system7_0/S_AXI_GP0/GP0_M_AXI_GP0",
-                "offset": "0x40000000",
-                "range": "1G",
-                "is_excluded": "TRUE"
-              }
-            }
-          }
-        }
       }
     },
     "addressing": {
