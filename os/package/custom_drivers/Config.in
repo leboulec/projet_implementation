@@ -1,0 +1,5 @@
+config BR2_PACKAGE_CUSTOM_DRIVERS
+  bool "custom drivers"
+  depends on BR2_LINUX_KERNEL
+  help
+    Les drivers que l'on a ecrit

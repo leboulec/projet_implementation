@@ -12,3 +12,6 @@ xsim.dir/
 *.xml
 *.str
 .ip_user_files/
+.vscode/
+q
+work-obj*
