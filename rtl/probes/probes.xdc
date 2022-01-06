@@ -87,3 +87,4 @@ create_debug_port u_ila_0 probe
 set_property port_width 1 [get_debug_ports u_ila_0/probe15]
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe15]
 connect_debug_port u_ila_0/probe15 [get_nets [list bd_inst/design_1_i/axi_dma_0/s_axis_s2mm_tvalid ]]
+
