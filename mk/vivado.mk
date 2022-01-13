@@ -163,10 +163,8 @@ build/vivado/script/import_ips.tcl: ${SYNTH_XCI_FILES} | build/vivado/script
 		echo "set_property part ${PART} [current_project]" >> $@; \
 		echo "set_property board_part ${BOARD} [current_project]" >> $@; \
 		echo "set_property target_language ${RTL_LANGUAGE} [current_project]" >> $@; \
-		echo "upgrade_ip -force [get_files build/vivado/`basename $${f}`]" >> $@; \
 		echo "generate_target all [get_files build/vivado/`basename $${f}`] -force" >> $@; \
 		echo "export_ip_user_files -of_objects [get_files build/vivado/build/`basename $${f}`] -no_script -force" >> $@; \
-		echo "export_simulation -directory \"build/vivado/sim\" -of_objects [get_files build/vivado/build/`basename $${f}`] -simulator xsim -force" >> $@; \
 		echo "update_ip_catalog" >> $@; \
 		echo "cp build/vivado/build/`basename $${f}` $${f}" >> build/vivado/script/save_ips.sh; \
 	done
@@ -186,7 +184,6 @@ build/vivado/script/import_bds.tcl: ${SYNTH_BD_FILES} | build/vivado/script
 		echo "set_property target_language ${RTL_LANGUAGE} [current_project]" >> $@; \
 		echo "generate_target all [get_files build/vivado/build/`basename $${f}`] -force" >> $@; \
 		echo "export_ip_user_files -of_objects [get_files build/vivado/build/`basename $${f}`] -no_script -force" >> $@; \
-		echo "export_simulation -directory \"build/vivado/sim\" -of_objects [get_files build/vivado/build/`basename $${f}`] -simulator xsim -force" >> $@; \
 		echo "make_wrapper -files [get_files build/vivado/build/`basename $${f}`] -top" >> $@; \
 		if [[ "${RTL_LANGUAGE}" == "VHDL" ]]; then \
 			echo "read_vhdl build/vivado/build/hdl/$$(basename $${f%.*})_wrapper.vhd" >> $@; \
